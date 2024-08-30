@@ -3,6 +3,11 @@ using System.Windows.Forms;
 
 namespace Clarity
 {
+    public static class Global
+    {
+
+    }
+
     public partial class Form1 : Form
     {
         private Form activeForm;
@@ -41,13 +46,6 @@ namespace Clarity
 
             selectedButton.BackColor = selectedColor;
             selectedButton.ForeColor = Color.Beige;
-        }
-
-        private void Lock()
-        {
-            this.TopMost = true;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
         }
 
         private void Form1_Load(object sender, EventArgs e)

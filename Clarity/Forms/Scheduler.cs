@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace Clarity.Forms
 {
@@ -15,6 +16,11 @@ namespace Clarity.Forms
         public Scheduler()
         {
             InitializeComponent();
+        }
+
+        private void Scheduler_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

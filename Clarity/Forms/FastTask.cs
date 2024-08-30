@@ -21,5 +21,12 @@ namespace Clarity.Forms
         {
 
         }
+
+        private void fast_task_btn_Click(object sender, EventArgs e)
+        {
+            UltraFocus u = new UltraFocus(textBox1.Text, dateTimePicker2.Value.Ticks, comboBox1.SelectedItem.ToString());
+            u.Show();
+            
+        }
     }
 }

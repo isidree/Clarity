@@ -206,6 +206,7 @@
             Controls.Add(label1);
             Name = "Scheduler";
             Text = "Scheduler";
+            Load += Scheduler_Load;
             ResumeLayout(false);
             PerformLayout();
         }
