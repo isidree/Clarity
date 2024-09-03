@@ -1,6 +1,6 @@
 ﻿namespace Clarity.Forms
 {
-    partial class Instructions
+    partial class Home
     {
         /// <summary>
         /// Required designer variable.

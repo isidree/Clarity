@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             menu = new Panel();
+            home_btn = new Button();
             logo = new PictureBox();
             configuration_btn = new Button();
             scheduled_tasks_btn = new Button();
@@ -42,6 +43,7 @@
             // menu
             // 
             menu.BackColor = Color.FromArgb(215, 204, 200);
+            menu.Controls.Add(home_btn);
             menu.Controls.Add(logo);
             menu.Controls.Add(configuration_btn);
             menu.Controls.Add(scheduled_tasks_btn);
@@ -53,6 +55,20 @@
             menu.Name = "menu";
             menu.Size = new Size(277, 908);
             menu.TabIndex = 0;
+            // 
+            // home_btn
+            // 
+            home_btn.BackColor = Color.FromArgb(161, 136, 127);
+            home_btn.FlatAppearance.BorderSize = 0;
+            home_btn.FlatStyle = FlatStyle.Flat;
+            home_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            home_btn.Location = new Point(0, 345);
+            home_btn.Name = "home_btn";
+            home_btn.Size = new Size(277, 56);
+            home_btn.TabIndex = 6;
+            home_btn.Text = "Home";
+            home_btn.UseVisualStyleBackColor = false;
+            home_btn.Click += home_btn_Click;
             // 
             // logo
             // 
@@ -85,7 +101,7 @@
             scheduled_tasks_btn.FlatAppearance.BorderSize = 0;
             scheduled_tasks_btn.FlatStyle = FlatStyle.Flat;
             scheduled_tasks_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            scheduled_tasks_btn.Location = new Point(0, 540);
+            scheduled_tasks_btn.Location = new Point(0, 591);
             scheduled_tasks_btn.Name = "scheduled_tasks_btn";
             scheduled_tasks_btn.Size = new Size(277, 56);
             scheduled_tasks_btn.TabIndex = 3;
@@ -99,7 +115,7 @@
             scheduler_btn.FlatAppearance.BorderSize = 0;
             scheduler_btn.FlatStyle = FlatStyle.Flat;
             scheduler_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            scheduler_btn.Location = new Point(0, 459);
+            scheduler_btn.Location = new Point(0, 510);
             scheduler_btn.Name = "scheduler_btn";
             scheduler_btn.Size = new Size(277, 56);
             scheduler_btn.TabIndex = 2;
@@ -113,7 +129,7 @@
             fast_task_btn.FlatAppearance.BorderSize = 0;
             fast_task_btn.FlatStyle = FlatStyle.Flat;
             fast_task_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            fast_task_btn.Location = new Point(0, 376);
+            fast_task_btn.Location = new Point(0, 427);
             fast_task_btn.Name = "fast_task_btn";
             fast_task_btn.Size = new Size(277, 56);
             fast_task_btn.TabIndex = 1;
@@ -156,5 +172,6 @@
         private Button scheduler_btn;
         private PictureBox logo;
         private Panel desktop;
+        private Button home_btn;
     }
 }

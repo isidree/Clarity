@@ -163,7 +163,6 @@
             Controls.Add(label1);
             Name = "FastTask";
             Text = "FastTask";
-            Load += FastTask_Load;
             ResumeLayout(false);
             PerformLayout();
         }

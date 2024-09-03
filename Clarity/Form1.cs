@@ -1,26 +1,31 @@
+using Clarity.Forms;
 using System;
 using System.Windows.Forms;
 
 namespace Clarity
 {
-    public static class Global
-    {
-
-    }
-
     public partial class Form1 : Form
     {
         private Form activeForm;
         private Button[] buttons;
+        private FastTask fastTask;
 
         public Form1()
         {
             InitializeComponent();
+
+            fastTask = new FastTask();
+            fastTask.TaskStarted += FastTask_TaskStarted1;
+        }
+
+        private void FastTask_TaskStarted1(object sender, EventArgs e)
+        {
+            OpenChildForm(new Forms.TaskExecutor());
         }
 
         private void OpenChildForm(Form childForm)
         {
-            activeForm?.Close();
+            activeForm?.Hide();
             activeForm = childForm;
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
@@ -36,7 +41,7 @@ namespace Clarity
             Color selectedColor = Color.FromArgb(97, 79, 71);
             Color normalColor = Color.FromArgb(161, 136, 127);
 
-            buttons = new Button[] { fast_task_btn, scheduler_btn, scheduled_tasks_btn, configuration_btn };
+            buttons = new Button[] { fast_task_btn, scheduler_btn, scheduled_tasks_btn, configuration_btn, home_btn };
 
             foreach (var button in buttons)
             {
@@ -50,12 +55,13 @@ namespace Clarity
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            OpenChildForm(new Forms.Instructions());
+            OpenChildForm(new Forms.Home());
+            SelectedButton(home_btn);
         }
 
         private void fast_task_btn_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new Forms.FastTask());
+            OpenChildForm(fastTask);
             SelectedButton(fast_task_btn);
         }
 
@@ -75,6 +81,12 @@ namespace Clarity
         {
             OpenChildForm(new Forms.Configuration());
             SelectedButton(configuration_btn);
+        }
+
+        private void home_btn_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new Forms.Home());
+            SelectedButton(home_btn);
         }
     }
 }

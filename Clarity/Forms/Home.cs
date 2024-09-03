@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Clarity.Forms
 {
-    public partial class Instructions : Form
+    public partial class Home : Form
     {
-        public Instructions()
+        public Home()
         {
             InitializeComponent();
         }
