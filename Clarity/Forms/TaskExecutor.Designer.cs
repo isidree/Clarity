@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             fast_task_btn = new Button();
             label6 = new Label();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
+            timer1 = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // fast_task_btn
@@ -48,6 +50,7 @@
             fast_task_btn.TabIndex = 28;
             fast_task_btn.Text = "Stop";
             fast_task_btn.UseVisualStyleBackColor = false;
+            fast_task_btn.Click += fast_task_btn_Click;
             // 
             // label6
             // 
@@ -65,11 +68,14 @@
             label3.AutoSize = true;
             label3.Font = new Font("Verdana", 48F, FontStyle.Regular, GraphicsUnit.Point);
             label3.ForeColor = Color.FromArgb(62, 39, 35);
-            label3.Location = new Point(210, 75);
+            label3.Location = new Point(74, 58);
+            label3.MaximumSize = new Size(1000, 97);
+            label3.MinimumSize = new Size(1000, 97);
             label3.Name = "label3";
-            label3.Size = new Size(731, 97);
+            label3.Size = new Size(1000, 97);
             label3.TabIndex = 26;
             label3.Text = "Maths homework";
+            label3.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
@@ -95,10 +101,16 @@
             label1.TabIndex = 24;
             label1.Text = "20:00";
             // 
+            // timer1
+            // 
+            timer1.Interval = 1000;
+            timer1.Tick += timer1_Tick;
+            // 
             // TaskExecutor
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(228, 228, 228);
             ClientSize = new Size(1150, 861);
             Controls.Add(fast_task_btn);
             Controls.Add(label6);
@@ -107,6 +119,7 @@
             Controls.Add(label1);
             Name = "TaskExecutor";
             Text = "TaskExecutor";
+            Load += TaskExecutor_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -118,5 +131,6 @@
         private Label label3;
         private Label label2;
         private Label label1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

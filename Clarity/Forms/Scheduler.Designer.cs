@@ -191,6 +191,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(228, 228, 228);
             ClientSize = new Size(1032, 829);
             Controls.Add(dateTimePicker2);
             Controls.Add(fast_task_btn);

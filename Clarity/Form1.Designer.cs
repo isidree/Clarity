@@ -139,6 +139,7 @@
             // 
             // desktop
             // 
+            desktop.BackColor = Color.FromArgb(227, 221, 210);
             desktop.Dock = DockStyle.Fill;
             desktop.Location = new Point(277, 0);
             desktop.Name = "desktop";
@@ -149,11 +150,13 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Beige;
+            BackColor = Color.FromArgb(228, 228, 228);
             ClientSize = new Size(1445, 908);
             Controls.Add(desktop);
             Controls.Add(menu);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Clarity";

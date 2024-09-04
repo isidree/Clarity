@@ -18,9 +18,21 @@ namespace Clarity
             fastTask.TaskStarted += FastTask_TaskStarted1;
         }
 
-        private void FastTask_TaskStarted1(object sender, EventArgs e)
+        private void FastTask_TaskStarted1(object sender, TaskStartedEventArgs e)
         {
-            OpenChildForm(new Forms.TaskExecutor());
+            string text = e.Text;
+            long ticks = e.Ticks;
+            string selectedItem = e.SelectedItem;
+
+            if (selectedItem == "Focus")
+            {
+                OpenChildForm(new Forms.TaskExecutor(text, ticks, selectedItem));
+            }
+            else if (selectedItem == "UltraFocus")
+            {
+                TaskExecutor t = new(text, ticks, selectedItem);
+                t.Show();
+            }
         }
 
         private void OpenChildForm(Form childForm)
