@@ -15,7 +15,6 @@ namespace Clarity.Forms
         private string text;
         private long ticks;
         private string selectedItem;
-        private DateTime endTime;
         private TimeSpan timeRemaining;
 
         public TaskExecutor(string _text, long _ticks, string _selectedItem)
@@ -42,14 +41,13 @@ namespace Clarity.Forms
 
             label3.Text = text;
 
-            endTime = DateTime.Now.AddMinutes(5);
-            timeRemaining = endTime - DateTime.Now;
+            timeRemaining = TimeSpan.FromMinutes(5);
             timer1.Start();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            timeRemaining = endTime - DateTime.Now;
+            timeRemaining = timeRemaining.Subtract(TimeSpan.FromSeconds(1));
 
             if (timeRemaining.TotalSeconds <= 0)
             {
@@ -58,7 +56,7 @@ namespace Clarity.Forms
             }
             else
             {
-                label1.Text = timeRemaining.ToString(@"hh\:mm\:ss");
+                label1.Text = timeRemaining.ToString(@"mm\:ss");
             }
         }
     }

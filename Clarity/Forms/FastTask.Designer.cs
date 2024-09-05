@@ -67,7 +67,7 @@
             // textBox1
             // 
             textBox1.Anchor = AnchorStyles.None;
-            textBox1.BackColor = Color.FromArgb(161, 136, 127);
+            textBox1.BackColor = Color.White;
             textBox1.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
             textBox1.Location = new Point(277, 203);
             textBox1.Name = "textBox1";
