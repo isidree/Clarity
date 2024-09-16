@@ -35,6 +35,8 @@
             label2 = new Label();
             label1 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
+            label4 = new Label();
+            label5 = new Label();
             SuspendLayout();
             // 
             // fast_task_btn
@@ -83,7 +85,7 @@
             label2.AutoSize = true;
             label2.Font = new Font("Verdana", 48F, FontStyle.Regular, GraphicsUnit.Point);
             label2.ForeColor = Color.FromArgb(62, 39, 35);
-            label2.Location = new Point(344, 475);
+            label2.Location = new Point(187, 475);
             label2.Name = "label2";
             label2.Size = new Size(454, 97);
             label2.TabIndex = 25;
@@ -95,7 +97,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Verdana", 72F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = Color.FromArgb(62, 39, 35);
-            label1.Location = new Point(363, 330);
+            label1.Location = new Point(206, 330);
             label1.Name = "label1";
             label1.Size = new Size(421, 145);
             label1.TabIndex = 24;
@@ -106,12 +108,38 @@
             timer1.Interval = 1000;
             timer1.Tick += timer1_Tick;
             // 
+            // label4
+            // 
+            label4.Anchor = AnchorStyles.None;
+            label4.AutoSize = true;
+            label4.Font = new Font("Verdana", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.ForeColor = Color.FromArgb(62, 39, 35);
+            label4.Location = new Point(728, 498);
+            label4.Name = "label4";
+            label4.Size = new Size(251, 57);
+            label4.TabIndex = 30;
+            label4.Text = "Rest time";
+            // 
+            // label5
+            // 
+            label5.Anchor = AnchorStyles.None;
+            label5.AutoSize = true;
+            label5.Font = new Font("Verdana", 48F, FontStyle.Regular, GraphicsUnit.Point);
+            label5.ForeColor = Color.FromArgb(62, 39, 35);
+            label5.Location = new Point(715, 359);
+            label5.Name = "label5";
+            label5.Size = new Size(282, 97);
+            label5.TabIndex = 29;
+            label5.Text = "10:00";
+            // 
             // TaskExecutor
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(228, 228, 228);
             ClientSize = new Size(1150, 861);
+            Controls.Add(label4);
+            Controls.Add(label5);
             Controls.Add(fast_task_btn);
             Controls.Add(label6);
             Controls.Add(label3);
@@ -132,5 +160,7 @@
         private Label label2;
         private Label label1;
         private System.Windows.Forms.Timer timer1;
+        private Label label4;
+        private Label label5;
     }
 }

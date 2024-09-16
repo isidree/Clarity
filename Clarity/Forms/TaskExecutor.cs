@@ -13,15 +13,19 @@ namespace Clarity.Forms
     public partial class TaskExecutor : Form
     {
         private string text;
-        private long ticks;
+        private DateTime endTime;
         private string selectedItem;
         private TimeSpan timeRemaining;
 
-        public TaskExecutor(string _text, long _ticks, string _selectedItem)
+        private List<TimeSpan> countdownSpans;
+        private DateTime currentSpanEnd;
+        private int currentSpanIndex;
+
+        public TaskExecutor(string _text, DateTime _endTime, string _selectedItem)
         {
             InitializeComponent();
             text = _text;
-            ticks = _ticks;
+            endTime = _endTime;
             selectedItem = _selectedItem;
         }
 
@@ -41,7 +45,50 @@ namespace Clarity.Forms
 
             label3.Text = text;
 
-            timeRemaining = TimeSpan.FromMinutes(5);
+            DateTime startTime = DateTime.Now;
+
+            countdownSpans = GenerateTimeSpans(startTime, endTime);
+
+            currentSpanIndex = 0;
+            StartNextSpan();
+        }
+
+        private List<TimeSpan> GenerateTimeSpans(DateTime start, DateTime end)
+        {
+            List<TimeSpan> spans = new List<TimeSpan>();
+            TimeSpan interval20 = TimeSpan.FromMinutes(20);
+            TimeSpan interval10 = TimeSpan.FromMinutes(10);
+            bool is20MinuteSpan = true;
+
+            DateTime current = start;
+            while (current < end)
+            {
+                TimeSpan interval = is20MinuteSpan ? interval20 : interval10;
+                DateTime nextSpanEnd = current + interval;
+
+                if (nextSpanEnd > end)
+                {
+                    nextSpanEnd = end;
+                }
+
+                spans.Add(nextSpanEnd - current);
+                current = nextSpanEnd;
+                is20MinuteSpan = !is20MinuteSpan;
+            }
+
+            return spans;
+        }
+
+        private void StartNextSpan()
+        {
+            if (currentSpanIndex >= countdownSpans.Count)
+            {
+                timer1.Stop();
+                MessageBox.Show("Countdown complete!", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            timeRemaining = countdownSpans[currentSpanIndex];
             timer1.Start();
         }
 
@@ -49,14 +96,13 @@ namespace Clarity.Forms
         {
             timeRemaining = timeRemaining.Subtract(TimeSpan.FromSeconds(1));
 
-            if (timeRemaining.TotalSeconds <= 0)
+            label1.Text = timeRemaining.ToString(@"mm\:ss");
+
+            if (timeRemaining <= TimeSpan.Zero)
             {
                 timer1.Stop();
-                label1.Text = "Time's up!";
-            }
-            else
-            {
-                label1.Text = timeRemaining.ToString(@"mm\:ss");
+                currentSpanIndex++;
+                StartNextSpan();
             }
         }
     }

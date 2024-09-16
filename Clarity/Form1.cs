@@ -21,16 +21,16 @@ namespace Clarity
         private void FastTask_TaskStarted1(object sender, TaskStartedEventArgs e)
         {
             string text = e.Text;
-            long ticks = e.Ticks;
+            DateTime EndTime = e.EndTime;
             string selectedItem = e.SelectedItem;
 
             if (selectedItem == "Focus")
             {
-                OpenChildForm(new Forms.TaskExecutor(text, ticks, selectedItem));
+                OpenChildForm(new Forms.TaskExecutor(text, EndTime, selectedItem));
             }
             else if (selectedItem == "UltraFocus")
             {
-                TaskExecutor t = new(text, ticks, selectedItem);
+                TaskExecutor t = new(text, EndTime, selectedItem);
                 t.Show();
             }
         }
@@ -53,7 +53,8 @@ namespace Clarity
             Color selectedColor = Color.FromArgb(97, 79, 71);
             Color normalColor = Color.FromArgb(161, 136, 127);
 
-            buttons = new Button[] { fast_task_btn, scheduler_btn, scheduled_tasks_btn, configuration_btn, home_btn };
+            buttons = new Button[] { fast_task_btn, scheduler_btn,
+                scheduled_tasks_btn, configuration_btn, home_btn };
 
             foreach (var button in buttons)
             {

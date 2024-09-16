@@ -31,7 +31,7 @@ namespace Clarity.Forms
 
             var args = new TaskStartedEventArgs(
                 string.IsNullOrEmpty(textBox1?.Text) ? "Unknown" : textBox1.Text,
-                dateTimePicker2.Value.Ticks,
+                dateTimePicker2.Value,
                 comboBox1.SelectedItem?.ToString() ?? "Focus"
             );
 
@@ -58,13 +58,13 @@ namespace Clarity.Forms
     public class TaskStartedEventArgs : EventArgs
     {
         public string Text { get; }
-        public long Ticks { get; }
+        public DateTime EndTime { get; }
         public string SelectedItem { get; }
 
-        public TaskStartedEventArgs(string text, long ticks, string selectedItem)
+        public TaskStartedEventArgs(string text, DateTime endtime, string selectedItem)
         {
             Text = text;
-            Ticks = ticks;
+            EndTime = endtime;
             SelectedItem = selectedItem;
         }
     }
