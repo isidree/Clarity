@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Clarity.Forms
 {
@@ -21,6 +22,8 @@ namespace Clarity.Forms
         private DateTime currentSpanEnd;
         private int currentSpanIndex;
 
+        public event EventHandler TaskEnded;
+
         public TaskExecutor(string _text, DateTime _endTime, string _selectedItem)
         {
             InitializeComponent();
@@ -31,7 +34,7 @@ namespace Clarity.Forms
 
         private void fast_task_btn_Click(object sender, EventArgs e)
         {
-
+            exit();
         }
 
         private void TaskExecutor_Load(object sender, EventArgs e)
@@ -103,6 +106,18 @@ namespace Clarity.Forms
                 timer1.Stop();
                 currentSpanIndex++;
                 StartNextSpan();
+            }
+        }
+
+        private void exit()
+        {
+            if (selectedItem == "UltraFocus")
+            {
+                this.Close();
+            }
+            else if (selectedItem == "Focus")
+            {
+                TaskEnded?.Invoke(this, EventArgs.Empty);
             }
         }
     }

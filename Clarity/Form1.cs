@@ -9,6 +9,7 @@ namespace Clarity
         private Form activeForm;
         private Button[] buttons;
         private FastTask fastTask;
+        private TaskExecutor taskExecutor;
 
         public Form1()
         {
@@ -16,6 +17,9 @@ namespace Clarity
 
             fastTask = new FastTask();
             fastTask.TaskStarted += FastTask_TaskStarted1;
+
+            taskExecutor = new TaskExecutor("dummy value", DateTime.Now, "dummy value");
+            taskExecutor.TaskEnded += TaskExecutor_TaskEnded1;
         }
 
         private void FastTask_TaskStarted1(object sender, TaskStartedEventArgs e)
@@ -33,6 +37,11 @@ namespace Clarity
                 TaskExecutor t = new(text, EndTime, selectedItem);
                 t.Show();
             }
+        }
+
+        private void TaskExecutor_TaskEnded1(object sender, EventArgs e)
+        {
+            OpenChildForm(new Forms.Home());
         }
 
         private void OpenChildForm(Form childForm)

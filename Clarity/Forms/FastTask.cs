@@ -50,7 +50,7 @@ namespace Clarity.Forms
             }
             else
             {
-                MessageBox.Show("Pleaase, select a valid mode.");
+                MessageBox.Show("Please, select a valid mode.");
             }
         }
     }
