@@ -10,7 +10,6 @@ using System.Windows.Forms;
 
 namespace Clarity.Forms
 {
-
     public partial class FastTask : Form
     {
         public event EventHandler<TaskStartedEventArgs> TaskStarted;
@@ -18,10 +17,16 @@ namespace Clarity.Forms
         public FastTask()
         {
             InitializeComponent();
+            dateTimePicker2.Value = DateTime.Now.AddHours(1);
         }
 
         private void fast_task_btn_Click(object sender, EventArgs e)
         {
+            if (dateTimePicker2.Value < DateTime.Now.AddMinutes(1))
+            {
+                MessageBox.Show("The inputted datetime is either past or too short. Select another one.");
+                return;
+            }
             string selected = comboBox1.SelectedItem?.ToString() ?? "Focus";
 
             if (selected != "Focus" && selected != "UltraFocus")

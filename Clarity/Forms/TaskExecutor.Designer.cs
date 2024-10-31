@@ -86,10 +86,13 @@
             label2.Font = new Font("Verdana", 48F, FontStyle.Regular, GraphicsUnit.Point);
             label2.ForeColor = Color.FromArgb(62, 39, 35);
             label2.Location = new Point(187, 475);
+            label2.MaximumSize = new Size(454, 97);
+            label2.MinimumSize = new Size(454, 97);
             label2.Name = "label2";
             label2.Size = new Size(454, 97);
             label2.TabIndex = 25;
             label2.Text = "Work time";
+            label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
@@ -102,6 +105,7 @@
             label1.Size = new Size(421, 145);
             label1.TabIndex = 24;
             label1.Text = "20:00";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // timer1
             // 
@@ -114,11 +118,14 @@
             label4.AutoSize = true;
             label4.Font = new Font("Verdana", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
             label4.ForeColor = Color.FromArgb(62, 39, 35);
-            label4.Location = new Point(728, 498);
+            label4.Location = new Point(721, 499);
+            label4.MaximumSize = new Size(270, 57);
+            label4.MinimumSize = new Size(270, 57);
             label4.Name = "label4";
-            label4.Size = new Size(251, 57);
+            label4.Size = new Size(270, 57);
             label4.TabIndex = 30;
             label4.Text = "Rest time";
+            label4.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label5
             // 
@@ -131,6 +138,7 @@
             label5.Size = new Size(282, 97);
             label5.TabIndex = 29;
             label5.Text = "10:00";
+            label5.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // TaskExecutor
             // 

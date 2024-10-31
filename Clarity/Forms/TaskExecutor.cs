@@ -19,7 +19,6 @@ namespace Clarity.Forms
         private TimeSpan timeRemaining;
 
         private List<TimeSpan> countdownSpans;
-        private DateTime currentSpanEnd;
         private int currentSpanIndex;
 
         public event EventHandler TaskEnded;
@@ -48,22 +47,27 @@ namespace Clarity.Forms
 
             label3.Text = text;
 
-            DateTime startTime = DateTime.Now;
 
-            countdownSpans = GenerateTimeSpans(startTime, endTime);
+            countdownSpans = GenerateTimeSpans(endTime);
 
             currentSpanIndex = 0;
             StartNextSpan();
+
+            if (currentSpanIndex == countdownSpans.Count - 1)
+            {
+                label5.Text = "00:00";
+                label4.Text = "Ending";
+            }
         }
 
-        private List<TimeSpan> GenerateTimeSpans(DateTime start, DateTime end)
+        private List<TimeSpan> GenerateTimeSpans(DateTime end)
         {
             List<TimeSpan> spans = new List<TimeSpan>();
             TimeSpan interval20 = TimeSpan.FromMinutes(20);
             TimeSpan interval10 = TimeSpan.FromMinutes(10);
             bool is20MinuteSpan = true;
 
-            DateTime current = start;
+            DateTime current = DateTime.Now;
             while (current < end)
             {
                 TimeSpan interval = is20MinuteSpan ? interval20 : interval10;
@@ -87,7 +91,7 @@ namespace Clarity.Forms
             if (currentSpanIndex >= countdownSpans.Count)
             {
                 timer1.Stop();
-                MessageBox.Show("Countdown complete!", "Finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                exit();
                 return;
             }
 
@@ -106,6 +110,25 @@ namespace Clarity.Forms
                 timer1.Stop();
                 currentSpanIndex++;
                 StartNextSpan();
+
+                if (currentSpanIndex % 2 == 0)
+                {
+                    label2.Text = "Work time";
+                    label5.Text = "10:00";
+                    label4.Text = "Rest time";
+                }
+                else if (currentSpanIndex % 2 != 0)
+                {
+                    label2.Text = "Rest time";
+                    label5.Text = "20:00";
+                    label4.Text = "Work time";
+                }
+
+                if (currentSpanIndex == countdownSpans.Count - 1)
+                {
+                    label5.Text = "00:00";
+                    label4.Text = "Ending";
+                }
             }
         }
 
@@ -114,10 +137,12 @@ namespace Clarity.Forms
             if (selectedItem == "UltraFocus")
             {
                 this.Close();
+                Application.Restart();
             }
             else if (selectedItem == "Focus")
             {
-                TaskEnded?.Invoke(this, EventArgs.Empty);
+                Application.Restart();
+                //TaskEnded?.Invoke(this, EventArgs.Empty);
             }
         }
     }

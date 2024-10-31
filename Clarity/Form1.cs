@@ -18,11 +18,11 @@ namespace Clarity
             fastTask = new FastTask();
             fastTask.TaskStarted += FastTask_TaskStarted1;
 
-            taskExecutor = new TaskExecutor("dummy value", DateTime.Now, "dummy value");
+            taskExecutor = new TaskExecutor("dummy value", DateTime.Now.AddSeconds(20), "dummy value");
             taskExecutor.TaskEnded += TaskExecutor_TaskEnded1;
         }
 
-        private void FastTask_TaskStarted1(object sender, TaskStartedEventArgs e)
+        private void FastTask_TaskStarted1(object? sender, TaskStartedEventArgs e)
         {
             string text = e.Text;
             DateTime EndTime = e.EndTime;
@@ -41,6 +41,7 @@ namespace Clarity
 
         private void TaskExecutor_TaskEnded1(object sender, EventArgs e)
         {
+            MessageBox.Show("Hola");
             OpenChildForm(new Forms.Home());
         }
 
