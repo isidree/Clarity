@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
+using System.Security.Principal;
+using System.Diagnostics;
 
 namespace Clarity.Forms
 {
@@ -20,8 +23,8 @@ namespace Clarity.Forms
 
         private List<TimeSpan> countdownSpans;
         private int currentSpanIndex;
-
-        public event EventHandler TaskEnded;
+        private string originalHostsContent;
+        private string hostFilePath = @"C:\WINDOWS\system32\drivers\etc\hosts";
 
         public TaskExecutor(string _text, DateTime _endTime, string _selectedItem)
         {
@@ -29,11 +32,26 @@ namespace Clarity.Forms
             text = _text;
             endTime = _endTime;
             selectedItem = _selectedItem;
+
+            this.FormClosing += TaskExecutor_FormClosing;
+            if (File.Exists(hostFilePath))
+            {
+                originalHostsContent = File.ReadAllText(hostFilePath);
+            }
         }
 
         private void fast_task_btn_Click(object sender, EventArgs e)
         {
-            exit();
+            DialogResult result = MessageBox.Show("Are you sure you want to exit? It is highly advised not to stop while you still have to finish your tasks.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                exit();
+            }
+            else
+            {
+                MessageBox.Show("I'm glad you stayed. Keep working hard, you're almost there!");
+            }
         }
 
         private void TaskExecutor_Load(object sender, EventArgs e)
@@ -43,6 +61,11 @@ namespace Clarity.Forms
                 this.TopMost = true;
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.WindowState = FormWindowState.Maximized;
+            }
+            else if (selectedItem == "Focus")
+            {
+                FlushDns();
+                BlockWebsite("www.roblox.com");
             }
 
             label3.Text = text;
@@ -134,6 +157,7 @@ namespace Clarity.Forms
 
         private void exit()
         {
+            Form1.AppState.ClosingPermit = true;
             if (selectedItem == "UltraFocus")
             {
                 this.Close();
@@ -142,7 +166,50 @@ namespace Clarity.Forms
             else if (selectedItem == "Focus")
             {
                 Application.Restart();
-                //TaskEnded?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        // FOCUS MODE: Blocking websites
+        public void BlockWebsite(string url)
+        {
+            /*for (int i = 0; i < comboBox1.Items.Count; i++)
+            {
+                list.Add("127.0.0.1" + " " + comboBox1.Items[i].ToString());
+            }*/
+
+            List<string> blocklist = new List<string>();
+            blocklist.Add("127.0.0.1 " + url);
+            File.AppendAllLines(hostFilePath, blocklist); //list
+        }
+
+        public void TaskExecutor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            File.WriteAllText(hostFilePath, originalHostsContent ?? string.Empty);
+        }
+
+        private void FlushDns()
+        {
+            try
+            {
+                // Create a new process
+                Process process = new Process();
+                process.StartInfo.FileName = "cmd.exe"; // Command prompt
+                process.StartInfo.Arguments = "/c ipconfig /flushdns"; // Command to execute
+                process.StartInfo.Verb = "runas"; // Run as administrator
+                process.StartInfo.RedirectStandardOutput = true; // Redirect output
+                process.StartInfo.UseShellExecute = false; // Do not use shell execute
+                process.StartInfo.CreateNoWindow = true; // Do not create a window
+
+                // Start the process
+                process.Start();
+
+                // Optional: Read the output
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit(); // Wait for the process to finish
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

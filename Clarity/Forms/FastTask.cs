@@ -20,6 +20,7 @@ namespace Clarity.Forms
             dateTimePicker2.Value = DateTime.Now.AddHours(1);
         }
 
+        // Button clicked --> Launch event
         private void fast_task_btn_Click(object sender, EventArgs e)
         {
             if (dateTimePicker2.Value < DateTime.Now.AddMinutes(1))
@@ -43,6 +44,7 @@ namespace Clarity.Forms
             TaskStarted?.Invoke(this, args);
         }
 
+        // Information button
         private void button1_Click(object sender, EventArgs e)
         {
             if (comboBox1.SelectedItem?.ToString() == "Focus")
@@ -60,6 +62,7 @@ namespace Clarity.Forms
         }
     }
 
+    // Get data to send to event
     public class TaskStartedEventArgs : EventArgs
     {
         public string Text { get; }

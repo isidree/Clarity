@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             menu = new Panel();
+            Exit = new Button();
             home_btn = new Button();
             logo = new PictureBox();
             configuration_btn = new Button();
@@ -43,6 +44,7 @@
             // menu
             // 
             menu.BackColor = Color.FromArgb(215, 204, 200);
+            menu.Controls.Add(Exit);
             menu.Controls.Add(home_btn);
             menu.Controls.Add(logo);
             menu.Controls.Add(configuration_btn);
@@ -55,6 +57,21 @@
             menu.Name = "menu";
             menu.Size = new Size(277, 908);
             menu.TabIndex = 0;
+            // 
+            // Exit
+            // 
+            Exit.BackColor = Color.FromArgb(161, 136, 127);
+            Exit.Dock = DockStyle.Bottom;
+            Exit.FlatAppearance.BorderSize = 0;
+            Exit.FlatStyle = FlatStyle.Flat;
+            Exit.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            Exit.Location = new Point(0, 852);
+            Exit.Name = "Exit";
+            Exit.Size = new Size(277, 56);
+            Exit.TabIndex = 7;
+            Exit.Text = "Exit";
+            Exit.UseVisualStyleBackColor = false;
+            Exit.Click += Exit_Click;
             // 
             // home_btn
             // 
@@ -83,11 +100,10 @@
             // configuration_btn
             // 
             configuration_btn.BackColor = Color.FromArgb(161, 136, 127);
-            configuration_btn.Dock = DockStyle.Bottom;
             configuration_btn.FlatAppearance.BorderSize = 0;
             configuration_btn.FlatStyle = FlatStyle.Flat;
             configuration_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            configuration_btn.Location = new Point(0, 852);
+            configuration_btn.Location = new Point(0, 769);
             configuration_btn.Name = "configuration_btn";
             configuration_btn.Size = new Size(277, 56);
             configuration_btn.TabIndex = 4;
@@ -154,7 +170,7 @@
             ClientSize = new Size(1445, 908);
             Controls.Add(desktop);
             Controls.Add(menu);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "Form1";
@@ -176,5 +192,6 @@
         private PictureBox logo;
         private Panel desktop;
         private Button home_btn;
+        private Button Exit;
     }
 }
