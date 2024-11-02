@@ -90,7 +90,7 @@ namespace Clarity
 
         // -- Page loading through initializations & buttons --
         private void Form1_Load(object sender, EventArgs e)
-        {       
+        {
             OpenChildForm(new Forms.Home());
             SelectedButton(home_btn);
 

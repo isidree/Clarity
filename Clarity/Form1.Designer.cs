@@ -28,25 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             menu = new Panel();
+            panel1 = new Panel();
+            logo = new PictureBox();
             Exit = new Button();
             home_btn = new Button();
-            logo = new PictureBox();
             configuration_btn = new Button();
             scheduled_tasks_btn = new Button();
             scheduler_btn = new Button();
             fast_task_btn = new Button();
             desktop = new Panel();
             menu.SuspendLayout();
+            panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)logo).BeginInit();
             SuspendLayout();
             // 
             // menu
             // 
             menu.BackColor = Color.FromArgb(215, 204, 200);
+            menu.Controls.Add(panel1);
             menu.Controls.Add(Exit);
             menu.Controls.Add(home_btn);
-            menu.Controls.Add(logo);
             menu.Controls.Add(configuration_btn);
             menu.Controls.Add(scheduled_tasks_btn);
             menu.Controls.Add(scheduler_btn);
@@ -57,6 +60,26 @@
             menu.Name = "menu";
             menu.Size = new Size(277, 908);
             menu.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.FromArgb(161, 136, 127);
+            panel1.Controls.Add(logo);
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(277, 277);
+            panel1.TabIndex = 0;
+            // 
+            // logo
+            // 
+            logo.Anchor = AnchorStyles.None;
+            logo.Image = (Image)resources.GetObject("logo.Image");
+            logo.Location = new Point(22, 23);
+            logo.Margin = new Padding(3, 4, 3, 4);
+            logo.Name = "logo";
+            logo.Size = new Size(232, 232);
+            logo.TabIndex = 5;
+            logo.TabStop = false;
             // 
             // Exit
             // 
@@ -86,16 +109,6 @@
             home_btn.Text = "Home";
             home_btn.UseVisualStyleBackColor = false;
             home_btn.Click += home_btn_Click;
-            // 
-            // logo
-            // 
-            logo.Anchor = AnchorStyles.None;
-            logo.Location = new Point(0, 0);
-            logo.Margin = new Padding(3, 4, 3, 4);
-            logo.Name = "logo";
-            logo.Size = new Size(277, 277);
-            logo.TabIndex = 5;
-            logo.TabStop = false;
             // 
             // configuration_btn
             // 
@@ -170,7 +183,7 @@
             ClientSize = new Size(1445, 908);
             Controls.Add(desktop);
             Controls.Add(menu);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "Form1";
@@ -178,6 +191,7 @@
             Text = "Clarity";
             Load += Form1_Load;
             menu.ResumeLayout(false);
+            panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)logo).EndInit();
             ResumeLayout(false);
         }
@@ -193,5 +207,6 @@
         private Panel desktop;
         private Button home_btn;
         private Button Exit;
+        private Panel panel1;
     }
 }
