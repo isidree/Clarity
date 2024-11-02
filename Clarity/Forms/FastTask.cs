@@ -18,6 +18,7 @@ namespace Clarity.Forms
         {
             InitializeComponent();
             dateTimePicker2.Value = DateTime.Now.AddHours(1);
+            comboBox1.SelectedItem = "Focus";
         }
 
         // Button clicked --> Launch event
@@ -29,11 +30,6 @@ namespace Clarity.Forms
                 return;
             }
             string selected = comboBox1.SelectedItem?.ToString() ?? "Focus";
-
-            if (selected != "Focus" && selected != "UltraFocus")
-            {
-                selected = "Focus";
-            }
 
             var args = new TaskStartedEventArgs(
                 string.IsNullOrEmpty(textBox1?.Text) ? "Unknown" : textBox1.Text,

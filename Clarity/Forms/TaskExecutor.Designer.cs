@@ -37,6 +37,7 @@
             timer1 = new System.Windows.Forms.Timer(components);
             label4 = new Label();
             label5 = new Label();
+            label7 = new Label();
             SuspendLayout();
             // 
             // fast_task_btn
@@ -76,7 +77,7 @@
             label3.Name = "label3";
             label3.Size = new Size(1000, 97);
             label3.TabIndex = 26;
-            label3.Text = "Maths homework";
+            label3.Text = "----------------";
             label3.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -85,7 +86,7 @@
             label2.AutoSize = true;
             label2.Font = new Font("Verdana", 48F, FontStyle.Regular, GraphicsUnit.Point);
             label2.ForeColor = Color.FromArgb(62, 39, 35);
-            label2.Location = new Point(187, 475);
+            label2.Location = new Point(187, 485);
             label2.MaximumSize = new Size(454, 97);
             label2.MinimumSize = new Size(454, 97);
             label2.Name = "label2";
@@ -100,11 +101,13 @@
             label1.AutoSize = true;
             label1.Font = new Font("Verdana", 72F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = Color.FromArgb(62, 39, 35);
-            label1.Location = new Point(206, 330);
+            label1.Location = new Point(206, 340);
+            label1.MaximumSize = new Size(421, 145);
+            label1.MinimumSize = new Size(421, 145);
             label1.Name = "label1";
             label1.Size = new Size(421, 145);
             label1.TabIndex = 24;
-            label1.Text = "20:00";
+            label1.Text = "--:--";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // timer1
@@ -118,7 +121,7 @@
             label4.AutoSize = true;
             label4.Font = new Font("Verdana", 28.2F, FontStyle.Regular, GraphicsUnit.Point);
             label4.ForeColor = Color.FromArgb(62, 39, 35);
-            label4.Location = new Point(721, 499);
+            label4.Location = new Point(721, 509);
             label4.MaximumSize = new Size(270, 57);
             label4.MinimumSize = new Size(270, 57);
             label4.Name = "label4";
@@ -133,12 +136,29 @@
             label5.AutoSize = true;
             label5.Font = new Font("Verdana", 48F, FontStyle.Regular, GraphicsUnit.Point);
             label5.ForeColor = Color.FromArgb(62, 39, 35);
-            label5.Location = new Point(715, 359);
+            label5.Location = new Point(715, 369);
+            label5.MaximumSize = new Size(282, 97);
+            label5.MinimumSize = new Size(282, 97);
             label5.Name = "label5";
             label5.Size = new Size(282, 97);
             label5.TabIndex = 29;
-            label5.Text = "10:00";
+            label5.Text = "--:--";
             label5.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label7
+            // 
+            label7.Anchor = AnchorStyles.None;
+            label7.AutoSize = true;
+            label7.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.ForeColor = Color.FromArgb(62, 39, 35);
+            label7.Location = new Point(335, 194);
+            label7.MaximumSize = new Size(475, 56);
+            label7.MinimumSize = new Size(475, 56);
+            label7.Name = "label7";
+            label7.Size = new Size(475, 56);
+            label7.TabIndex = 31;
+            label7.Text = "---";
+            label7.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // TaskExecutor
             // 
@@ -146,6 +166,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(228, 228, 228);
             ClientSize = new Size(1150, 861);
+            Controls.Add(label7);
             Controls.Add(label4);
             Controls.Add(label5);
             Controls.Add(fast_task_btn);
@@ -170,5 +191,6 @@
         private System.Windows.Forms.Timer timer1;
         private Label label4;
         private Label label5;
+        private Label label7;
     }
 }

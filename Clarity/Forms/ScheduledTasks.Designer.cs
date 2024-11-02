@@ -38,6 +38,7 @@
             ClientSize = new Size(800, 450);
             Name = "ScheduledTasks";
             Text = "ScheduledTasks";
+            Load += ScheduledTasks_Load;
             ResumeLayout(false);
         }
 

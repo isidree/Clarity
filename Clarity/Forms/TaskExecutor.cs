@@ -26,6 +26,12 @@ namespace Clarity.Forms
         private string originalHostsContent;
         private string hostFilePath = @"C:\WINDOWS\system32\drivers\etc\hosts";
 
+        private List<string> blockedLinks;
+        private int workTime;
+        private int restTime;
+
+        // INITIALIZATIONS
+
         public TaskExecutor(string _text, DateTime _endTime, string _selectedItem)
         {
             InitializeComponent();
@@ -33,24 +39,13 @@ namespace Clarity.Forms
             endTime = _endTime;
             selectedItem = _selectedItem;
 
+            var database = new DatabaseManager();
+            (blockedLinks, workTime, restTime) = database.GetConfiguration();
+
             this.FormClosing += TaskExecutor_FormClosing;
             if (File.Exists(hostFilePath))
             {
                 originalHostsContent = File.ReadAllText(hostFilePath);
-            }
-        }
-
-        private void fast_task_btn_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("Are you sure you want to exit? It is highly advised not to stop while you still have to finish your tasks.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                exit();
-            }
-            else
-            {
-                MessageBox.Show("I'm glad you stayed. Keep working hard, you're almost there!");
             }
         }
 
@@ -65,16 +60,22 @@ namespace Clarity.Forms
             else if (selectedItem == "Focus")
             {
                 FlushDns();
-                BlockWebsite("www.roblox.com");
+
+                for (int i = 0; i < blockedLinks.Count; i++)
+                {
+                    BlockWebsite(blockedLinks[i]);
+                }
             }
-
-            label3.Text = text;
-
 
             countdownSpans = GenerateTimeSpans(endTime);
 
             currentSpanIndex = 0;
             StartNextSpan();
+
+            label3.Text = text;
+            label5.Text = restTime.ToString() + ":00";
+            label1.Text = workTime.ToString() + ":00";
+            label7.Text = "Ending time: " + endTime.ToString();
 
             if (currentSpanIndex == countdownSpans.Count - 1)
             {
@@ -82,18 +83,49 @@ namespace Clarity.Forms
                 label4.Text = "Ending";
             }
         }
+        private void FlushDns()
+        {
+            try
+            {
+                Process process = new Process();
+                process.StartInfo.FileName = "cmd.exe";
+                process.StartInfo.Arguments = "/c ipconfig /flushdns";
+                process.StartInfo.Verb = "runas";
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+
+                process.Start();
+
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void BlockWebsite(string url)
+        {
+            List<string> blocklist = new List<string>();
+            blocklist.Add("127.0.0.1 " + url);
+            File.AppendAllLines(hostFilePath, blocklist);
+        }
+
+        // TIME MANAGEMENT
 
         private List<TimeSpan> GenerateTimeSpans(DateTime end)
         {
             List<TimeSpan> spans = new List<TimeSpan>();
-            TimeSpan interval20 = TimeSpan.FromMinutes(20);
-            TimeSpan interval10 = TimeSpan.FromMinutes(10);
-            bool is20MinuteSpan = true;
+            TimeSpan intervalWork = TimeSpan.FromMinutes(workTime);
+            TimeSpan intervalRest = TimeSpan.FromMinutes(restTime);
+            bool isWorkSpan = true;
 
             DateTime current = DateTime.Now;
             while (current < end)
             {
-                TimeSpan interval = is20MinuteSpan ? interval20 : interval10;
+                TimeSpan interval = isWorkSpan ? intervalWork : intervalRest;
                 DateTime nextSpanEnd = current + interval;
 
                 if (nextSpanEnd > end)
@@ -103,7 +135,7 @@ namespace Clarity.Forms
 
                 spans.Add(nextSpanEnd - current);
                 current = nextSpanEnd;
-                is20MinuteSpan = !is20MinuteSpan;
+                isWorkSpan = !isWorkSpan;
             }
 
             return spans;
@@ -137,13 +169,13 @@ namespace Clarity.Forms
                 if (currentSpanIndex % 2 == 0)
                 {
                     label2.Text = "Work time";
-                    label5.Text = "10:00";
+                    label5.Text = restTime.ToString() + ":00";
                     label4.Text = "Rest time";
                 }
                 else if (currentSpanIndex % 2 != 0)
                 {
                     label2.Text = "Rest time";
-                    label5.Text = "20:00";
+                    label5.Text = workTime.ToString() + ":00";
                     label4.Text = "Work time";
                 }
 
@@ -152,6 +184,22 @@ namespace Clarity.Forms
                     label5.Text = "00:00";
                     label4.Text = "Ending";
                 }
+            }
+        }
+
+        // FORM CLOSURE
+
+        private void fast_task_btn_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to exit? It is highly advised not to stop while you still have to finish your tasks.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                exit();
+            }
+            else
+            {
+                MessageBox.Show("I'm glad you stayed. Keep working hard, you're almost there!");
             }
         }
 
@@ -169,47 +217,13 @@ namespace Clarity.Forms
             }
         }
 
-        // FOCUS MODE: Blocking websites
-        public void BlockWebsite(string url)
-        {
-            /*for (int i = 0; i < comboBox1.Items.Count; i++)
-            {
-                list.Add("127.0.0.1" + " " + comboBox1.Items[i].ToString());
-            }*/
-
-            List<string> blocklist = new List<string>();
-            blocklist.Add("127.0.0.1 " + url);
-            File.AppendAllLines(hostFilePath, blocklist); //list
-        }
-
         public void TaskExecutor_FormClosing(object sender, FormClosingEventArgs e)
         {
             File.WriteAllText(hostFilePath, originalHostsContent ?? string.Empty);
-        }
 
-        private void FlushDns()
-        {
-            try
+            if (selectedItem == "UltraFocus" && Form1.AppState.ClosingPermit == false)
             {
-                // Create a new process
-                Process process = new Process();
-                process.StartInfo.FileName = "cmd.exe"; // Command prompt
-                process.StartInfo.Arguments = "/c ipconfig /flushdns"; // Command to execute
-                process.StartInfo.Verb = "runas"; // Run as administrator
-                process.StartInfo.RedirectStandardOutput = true; // Redirect output
-                process.StartInfo.UseShellExecute = false; // Do not use shell execute
-                process.StartInfo.CreateNoWindow = true; // Do not create a window
-
-                // Start the process
-                process.Start();
-
-                // Optional: Read the output
-                string output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit(); // Wait for the process to finish
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                e.Cancel = true;
             }
         }
     }

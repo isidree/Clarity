@@ -90,9 +90,15 @@ namespace Clarity
 
         // -- Page loading through initializations & buttons --
         private void Form1_Load(object sender, EventArgs e)
-        {
+        {       
             OpenChildForm(new Forms.Home());
             SelectedButton(home_btn);
+
+            // create database
+
+            var database = new DatabaseManager();
+            database.CreateConfigurationTable();
+            database.CreateStudySessionsTable();
         }
 
         private void fast_task_btn_Click(object sender, EventArgs e)
