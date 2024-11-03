@@ -28,17 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             menu = new Panel();
+            home_btn = new Button();
             panel1 = new Panel();
             logo = new PictureBox();
             Exit = new Button();
-            home_btn = new Button();
             configuration_btn = new Button();
             scheduled_tasks_btn = new Button();
             scheduler_btn = new Button();
             fast_task_btn = new Button();
             desktop = new Panel();
+            TimeChecker = new System.Windows.Forms.Timer(components);
             menu.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)logo).BeginInit();
@@ -47,9 +49,9 @@
             // menu
             // 
             menu.BackColor = Color.FromArgb(215, 204, 200);
+            menu.Controls.Add(home_btn);
             menu.Controls.Add(panel1);
             menu.Controls.Add(Exit);
-            menu.Controls.Add(home_btn);
             menu.Controls.Add(configuration_btn);
             menu.Controls.Add(scheduled_tasks_btn);
             menu.Controls.Add(scheduler_btn);
@@ -60,6 +62,20 @@
             menu.Name = "menu";
             menu.Size = new Size(277, 908);
             menu.TabIndex = 0;
+            // 
+            // home_btn
+            // 
+            home_btn.BackColor = Color.FromArgb(161, 136, 127);
+            home_btn.FlatAppearance.BorderSize = 0;
+            home_btn.FlatStyle = FlatStyle.Flat;
+            home_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            home_btn.Location = new Point(8, 343);
+            home_btn.Name = "home_btn";
+            home_btn.Size = new Size(259, 56);
+            home_btn.TabIndex = 6;
+            home_btn.Text = "Home";
+            home_btn.UseVisualStyleBackColor = false;
+            home_btn.Click += home_btn_Click;
             // 
             // panel1
             // 
@@ -84,31 +100,16 @@
             // Exit
             // 
             Exit.BackColor = Color.FromArgb(161, 136, 127);
-            Exit.Dock = DockStyle.Bottom;
             Exit.FlatAppearance.BorderSize = 0;
             Exit.FlatStyle = FlatStyle.Flat;
             Exit.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            Exit.Location = new Point(0, 852);
+            Exit.Location = new Point(8, 826);
             Exit.Name = "Exit";
-            Exit.Size = new Size(277, 56);
+            Exit.Size = new Size(259, 56);
             Exit.TabIndex = 7;
             Exit.Text = "Exit";
             Exit.UseVisualStyleBackColor = false;
             Exit.Click += Exit_Click;
-            // 
-            // home_btn
-            // 
-            home_btn.BackColor = Color.FromArgb(161, 136, 127);
-            home_btn.FlatAppearance.BorderSize = 0;
-            home_btn.FlatStyle = FlatStyle.Flat;
-            home_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            home_btn.Location = new Point(0, 345);
-            home_btn.Name = "home_btn";
-            home_btn.Size = new Size(277, 56);
-            home_btn.TabIndex = 6;
-            home_btn.Text = "Home";
-            home_btn.UseVisualStyleBackColor = false;
-            home_btn.Click += home_btn_Click;
             // 
             // configuration_btn
             // 
@@ -116,9 +117,9 @@
             configuration_btn.FlatAppearance.BorderSize = 0;
             configuration_btn.FlatStyle = FlatStyle.Flat;
             configuration_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            configuration_btn.Location = new Point(0, 769);
+            configuration_btn.Location = new Point(8, 744);
             configuration_btn.Name = "configuration_btn";
-            configuration_btn.Size = new Size(277, 56);
+            configuration_btn.Size = new Size(259, 56);
             configuration_btn.TabIndex = 4;
             configuration_btn.Text = "Configuration";
             configuration_btn.UseVisualStyleBackColor = false;
@@ -130,9 +131,9 @@
             scheduled_tasks_btn.FlatAppearance.BorderSize = 0;
             scheduled_tasks_btn.FlatStyle = FlatStyle.Flat;
             scheduled_tasks_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            scheduled_tasks_btn.Location = new Point(0, 591);
+            scheduled_tasks_btn.Location = new Point(8, 591);
             scheduled_tasks_btn.Name = "scheduled_tasks_btn";
-            scheduled_tasks_btn.Size = new Size(277, 56);
+            scheduled_tasks_btn.Size = new Size(259, 56);
             scheduled_tasks_btn.TabIndex = 3;
             scheduled_tasks_btn.Text = "Scheduled tasks";
             scheduled_tasks_btn.UseVisualStyleBackColor = false;
@@ -144,9 +145,9 @@
             scheduler_btn.FlatAppearance.BorderSize = 0;
             scheduler_btn.FlatStyle = FlatStyle.Flat;
             scheduler_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            scheduler_btn.Location = new Point(0, 510);
+            scheduler_btn.Location = new Point(8, 510);
             scheduler_btn.Name = "scheduler_btn";
-            scheduler_btn.Size = new Size(277, 56);
+            scheduler_btn.Size = new Size(259, 56);
             scheduler_btn.TabIndex = 2;
             scheduler_btn.Text = "Scheduler";
             scheduler_btn.UseVisualStyleBackColor = false;
@@ -158,9 +159,9 @@
             fast_task_btn.FlatAppearance.BorderSize = 0;
             fast_task_btn.FlatStyle = FlatStyle.Flat;
             fast_task_btn.Font = new Font("Verdana", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            fast_task_btn.Location = new Point(0, 427);
+            fast_task_btn.Location = new Point(8, 427);
             fast_task_btn.Name = "fast_task_btn";
-            fast_task_btn.Size = new Size(277, 56);
+            fast_task_btn.Size = new Size(259, 56);
             fast_task_btn.TabIndex = 1;
             fast_task_btn.Text = "Fast task";
             fast_task_btn.UseVisualStyleBackColor = false;
@@ -174,6 +175,11 @@
             desktop.Name = "desktop";
             desktop.Size = new Size(1168, 908);
             desktop.TabIndex = 10;
+            // 
+            // TimeChecker
+            // 
+            TimeChecker.Interval = 1000;
+            TimeChecker.Tick += TimeChecker_Tick;
             // 
             // Form1
             // 
@@ -208,5 +214,6 @@
         private Button home_btn;
         private Button Exit;
         private Panel panel1;
+        private System.Windows.Forms.Timer TimeChecker;
     }
 }

@@ -1,6 +1,9 @@
 using Clarity.Forms;
 using System;
 using System.Windows.Forms;
+using System.Threading;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Clarity
 {
@@ -15,10 +18,19 @@ namespace Clarity
         {
             InitializeComponent();
 
+            SetButtonRegion(home_btn, 30);
+            SetButtonRegion(fast_task_btn, 30);
+            SetButtonRegion(scheduler_btn, 30);
+            SetButtonRegion(scheduled_tasks_btn, 30);
+            SetButtonRegion(configuration_btn, 30);
+            SetButtonRegion(Exit, 30);
+
             fastTask = new FastTask();
             fastTask.TaskStarted += FastTask_TaskStarted1;
 
             this.FormClosing += Form1_FormClosing;
+
+            TimeChecker.Start(); // For time checking studySessions
         }
 
         // Closure control
@@ -34,16 +46,7 @@ namespace Clarity
             DateTime EndTime = e.EndTime;
             string selectedItem = e.SelectedItem;
 
-            if (selectedItem == "Focus")
-            {
-                locked = true;
-                OpenChildForm(new Forms.TaskExecutor(text, EndTime, selectedItem));
-            }
-            else if (selectedItem == "UltraFocus")
-            {
-                TaskExecutor t = new(text, EndTime, selectedItem);
-                t.Show();
-            }
+            launchTaskExecutor(text, EndTime, selectedItem);
         }
 
         // -- Global functions --
@@ -78,6 +81,19 @@ namespace Clarity
             selectedButton.ForeColor = Color.Beige;
         }
 
+        private void SetButtonRegion(Button button, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.StartFigure();
+            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
+            path.AddArc(new Rectangle(button.Width - radius, 0, radius, radius), 270, 90);
+            path.AddArc(new Rectangle(button.Width - radius, button.Height - radius, radius, radius), 0, 90);
+            path.AddArc(new Rectangle(0, button.Height - radius, radius, radius), 90, 90);
+            path.CloseFigure();
+
+            button.Region = new Region(path);
+        }
+
         private void ifLocked(Action action)
         {
             if (locked)
@@ -86,6 +102,20 @@ namespace Clarity
                 return;
             }
             action();
+        }
+
+        private void launchTaskExecutor(string text, DateTime EndTime, string selectedItem)
+        {
+            if (selectedItem == "Focus")
+            {
+                locked = true;
+                OpenChildForm(new Forms.TaskExecutor(text, EndTime, selectedItem));
+            }
+            else if (selectedItem == "UltraFocus")
+            {
+                TaskExecutor t = new(text, EndTime, selectedItem);
+                t.Show();
+            }
         }
 
         // -- Page loading through initializations & buttons --
@@ -162,6 +192,53 @@ namespace Clarity
             if (!AppState.ClosingPermit)
             {
                 e.Cancel = true;
+            }
+        }
+
+
+        // Scheduler method timecheck
+
+        private void TimeChecker_Tick(object sender, EventArgs e)
+        {
+            DateTime now = DateTime.Now;
+            var database = new DatabaseManager();
+            List<(int Id, string TaskName, DateTime StartDate, DateTime EndDate, string FocusMode, bool ReceiveNotifications)> studySessions = database.GetStudySessions();
+
+            foreach (var session in studySessions)
+            {
+                bool isSessionToday = session.StartDate.Date == now.Date;
+                bool isHourMatch = session.StartDate.Hour == now.Hour;
+                bool isMinuteMatch = session.StartDate.Minute == now.Minute;
+
+                if (session.ReceiveNotifications)
+                {
+                    if (isSessionToday && isHourMatch && session.StartDate.Minute - 5 == now.Minute && now.Second == 0)
+                    {
+                        ShowNotification(session.TaskName, "5 minutes");
+                    }
+                    else if (isSessionToday && isHourMatch && session.StartDate.Minute - 1 == now.Minute && now.Second == 0)
+                    {
+                        ShowNotification(session.TaskName, "1 minute");
+                    }
+                }
+
+                if (isSessionToday && isHourMatch && isMinuteMatch && now.Second == 0)
+                {
+                    launchTaskExecutor(session.TaskName, session.EndDate, session.FocusMode);
+                }
+            }
+        }
+
+        private void ShowNotification(string taskName, string time)
+        {
+            using (NotifyIcon notifyIcon = new NotifyIcon())
+            {
+                notifyIcon.Icon = SystemIcons.Information;
+                notifyIcon.Visible = true;
+                notifyIcon.BalloonTipTitle = "Session starting soon!";
+                notifyIcon.BalloonTipText = $"{taskName} scheduled within {time}.";
+                notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+                notifyIcon.ShowBalloonTip(5000);
             }
         }
     }

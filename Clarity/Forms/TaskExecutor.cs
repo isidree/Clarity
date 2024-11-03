@@ -53,18 +53,11 @@ namespace Clarity.Forms
         {
             if (selectedItem == "UltraFocus")
             {
-                this.TopMost = true;
-                this.FormBorderStyle = FormBorderStyle.None;
-                this.WindowState = FormWindowState.Maximized;
+                BlockComputer();
             }
             else if (selectedItem == "Focus")
             {
-                FlushDns();
-
-                for (int i = 0; i < blockedLinks.Count; i++)
-                {
-                    BlockWebsite(blockedLinks[i]);
-                }
+                BlockWebsites();
             }
 
             countdownSpans = GenerateTimeSpans(endTime);
@@ -75,7 +68,7 @@ namespace Clarity.Forms
             label3.Text = text;
             label5.Text = restTime.ToString() + ":00";
             label1.Text = workTime.ToString() + ":00";
-            label7.Text = "Ending time: " + endTime.ToString();
+            label7.Text = "Ending time: " + endTime.ToString(@"dd/MM/yyyy HH:mm");
 
             if (currentSpanIndex == countdownSpans.Count - 1)
             {
@@ -106,11 +99,37 @@ namespace Clarity.Forms
             }
         }
 
-        public void BlockWebsite(string url)
+        public void BlockWebsites()
         {
-            List<string> blocklist = new List<string>();
-            blocklist.Add("127.0.0.1 " + url);
-            File.AppendAllLines(hostFilePath, blocklist);
+            FlushDns();
+            for (int i = 0; i < blockedLinks.Count; i++)
+            {
+                if (!(blockedLinks[i] == ""))
+                {
+                    List<string> blocklist = new List<string>();
+                    blocklist.Add("127.0.0.1 " + blockedLinks[i]);
+                    File.AppendAllLines(hostFilePath, blocklist);
+                }
+            }
+        }
+
+        public void UnblockWebsites()
+        {
+            File.WriteAllText(hostFilePath, originalHostsContent ?? string.Empty);
+        }
+
+        public void BlockComputer()
+        {
+            this.TopMost = true;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+        }
+
+        public void UnblockComputer()
+        {
+            this.TopMost = false;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.WindowState = FormWindowState.Minimized;
         }
 
         // TIME MANAGEMENT
@@ -171,12 +190,35 @@ namespace Clarity.Forms
                     label2.Text = "Work time";
                     label5.Text = restTime.ToString() + ":00";
                     label4.Text = "Rest time";
+
+                    if (selectedItem == "Focus")
+                    {
+                        BlockWebsites();
+                        MessageBox.Show("Work time: the pages have been blocked.");
+                    }
+                    else if (selectedItem == "UltraFocus")
+                    {
+                        BlockComputer();
+                        MessageBox.Show("Work time: the computer has been blocked.");
+                    }
+                    
                 }
                 else if (currentSpanIndex % 2 != 0)
                 {
                     label2.Text = "Rest time";
                     label5.Text = workTime.ToString() + ":00";
                     label4.Text = "Work time";
+
+                    if (selectedItem == "Focus")
+                    {
+                        UnblockWebsites();
+                        MessageBox.Show("Rest time: the blocked pages are temporarily unblocked.");
+                    }
+                    else if (selectedItem == "UltraFocus")
+                    {
+                        UnblockComputer();
+                        MessageBox.Show("Rest time: the computer is temporarily unblocked.");
+                    }
                 }
 
                 if (currentSpanIndex == countdownSpans.Count - 1)
@@ -203,23 +245,21 @@ namespace Clarity.Forms
             }
         }
 
+        private void removePossibleScheduledTask()
+        {
+            var database = new DatabaseManager();
+
+        }
+
         private void exit()
         {
             Form1.AppState.ClosingPermit = true;
-            if (selectedItem == "UltraFocus")
-            {
-                this.Close();
-                Application.Restart();
-            }
-            else if (selectedItem == "Focus")
-            {
-                Application.Restart();
-            }
+            Application.Restart();
         }
 
         public void TaskExecutor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            File.WriteAllText(hostFilePath, originalHostsContent ?? string.Empty);
+            UnblockWebsites();
 
             if (selectedItem == "UltraFocus" && Form1.AppState.ClosingPermit == false)
             {
