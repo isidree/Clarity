@@ -187,32 +187,48 @@ namespace Clarity
             }
         }
 
-        public List<(string TaskName, DateTime StartDate, DateTime EndDate, string FocusMode, bool ReceiveNotifications)> GetStudySessions()
+        public List<(int Id, string TaskName, DateTime StartDate, DateTime EndDate, string FocusMode, bool ReceiveNotifications)> GetStudySessions()
         {
-            var sessions = new List<(string, DateTime, DateTime, string, bool)>();
+            var sessions = new List<(int, string, DateTime, DateTime, string, bool)>();
 
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 connection.Open();
-                string selectQuery = "SELECT TaskName, StartDate, EndDate, FocusMode, ReceiveNotifications FROM StudySessions";
+                string selectQuery = "SELECT Id, TaskName, StartDate, EndDate, FocusMode, ReceiveNotifications FROM StudySessions";
 
                 using (var command = new SQLiteCommand(selectQuery, connection))
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        var taskName = reader.GetString(0);
-                        var startDate = reader.GetDateTime(1);
-                        var endDate = reader.GetDateTime(2);
-                        var focusMode = reader.GetString(3);
-                        var receiveNotifications = reader.GetInt32(4) == 1;
+                        var id = reader.GetInt32(0);
+                        var taskName = reader.GetString(1);
+                        var startDate = reader.GetDateTime(2);
+                        var endDate = reader.GetDateTime(3);
+                        var focusMode = reader.GetString(4);
+                        var receiveNotifications = reader.GetInt32(5) == 1;
 
-                        sessions.Add((taskName, startDate, endDate, focusMode, receiveNotifications));
+                        sessions.Add((id, taskName, startDate, endDate, focusMode, receiveNotifications));
                     }
                 }
             }
 
             return sessions;
+        }
+
+        public void DeleteStudySession(int sessionId)
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+                string deleteQuery = "DELETE FROM StudySessions WHERE Id = @sessionId";
+
+                using (var command = new SQLiteCommand(deleteQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@sessionId", sessionId);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

@@ -168,7 +168,7 @@
             // 
             // desktop
             // 
-            desktop.BackColor = Color.FromArgb(227, 221, 210);
+            desktop.BackColor = Color.FromArgb(228, 228, 228);
             desktop.Dock = DockStyle.Fill;
             desktop.Location = new Point(277, 0);
             desktop.Name = "desktop";
@@ -183,7 +183,7 @@
             ClientSize = new Size(1445, 908);
             Controls.Add(desktop);
             Controls.Add(menu);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "Form1";
