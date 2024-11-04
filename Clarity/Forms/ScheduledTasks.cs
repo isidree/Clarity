@@ -46,12 +46,15 @@ namespace Clarity.Forms
                 };
 
                 var taskLabel = new Label { Text = session.TaskName, Font = new Font("Verdana", 15, FontStyle.Bold), AutoSize = true };
-                var dateLabel = new Label { Text = $"{session.StartDate:g} - {session.EndDate:g}", Font = new Font("Verdana", 15), AutoSize = true };
-                var focusModeLabel = new Label { Text = $"Focus Mode: {session.FocusMode}", Font = new Font("Verdana", 15), AutoSize = true };
+                var dateLabel = new Label { Text = $"🕑 {session.StartDate:g} - {session.EndDate:g}", Font = new Font("Verdana", 15), AutoSize = true };
+                var focusModeLabel = new Label { Text = $"🧠 Focus Mode: {session.FocusMode}", Font = new Font("Verdana", 15), AutoSize = true };
                 var notificationLabel = new Label { Text = session.ReceiveNotifications ? "🔔 Notifications On" : "🔕 Notifications Off", Font = new Font("Verdana", 15), AutoSize = true };
                 var deleteBtn = new Button { Text = "Delete", Font = new Font("Verdana", 15), FlatStyle = FlatStyle.Flat, Width = 150, Height = 50, BackColor = Color.FromArgb(161, 136, 127), TextAlign = ContentAlignment.MiddleCenter };
                 var divider = new Panel { Height = 2, Dock = DockStyle.Bottom, BackColor = Color.Gray, Margin = new Padding(0, 5, 0, 5) };
 
+                var rndsh = new RoundShaper();
+                rndsh.RoundButton(deleteBtn);
+                deleteBtn.FlatAppearance.BorderSize = 0;
                 deleteBtn.Click += (s, e) => DeleteStudySession(session.Id);
 
                 sessionPanel.Controls.Add(taskLabel);

@@ -11,6 +11,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.IO;
 using System.Security.Principal;
 using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
 
 namespace Clarity.Forms
 {
@@ -19,6 +20,7 @@ namespace Clarity.Forms
         private string text;
         private DateTime endTime;
         private string selectedItem;
+        private int sessionId;
         private TimeSpan timeRemaining;
 
         private List<TimeSpan> countdownSpans;
@@ -32,21 +34,30 @@ namespace Clarity.Forms
 
         // INITIALIZATIONS
 
-        public TaskExecutor(string _text, DateTime _endTime, string _selectedItem)
+        public TaskExecutor(string _text, DateTime _endTime, string _selectedItem, int _sessionId)
         {
             InitializeComponent();
+
+            // Retrieve data obtained from session
             text = _text;
             endTime = _endTime;
             selectedItem = _selectedItem;
+            sessionId = _sessionId;
 
+            // Retrieve data from configuration db
             var database = new DatabaseManager();
             (blockedLinks, workTime, restTime) = database.GetConfiguration();
 
+            // Handle form closure
             this.FormClosing += TaskExecutor_FormClosing;
             if (File.Exists(hostFilePath))
             {
                 originalHostsContent = File.ReadAllText(hostFilePath);
             }
+
+            // Shape the buttons to round form
+            var rndsh = new RoundShaper();
+            rndsh.RoundButton(fast_task_btn);
         }
 
         private void TaskExecutor_Load(object sender, EventArgs e)
@@ -247,8 +258,11 @@ namespace Clarity.Forms
 
         private void removePossibleScheduledTask()
         {
-            var database = new DatabaseManager();
-
+            if (sessionId != 0)
+            {
+                var database = new DatabaseManager();
+                database.DeleteStudySession(sessionId);
+            }
         }
 
         private void exit()
@@ -260,6 +274,7 @@ namespace Clarity.Forms
         public void TaskExecutor_FormClosing(object sender, FormClosingEventArgs e)
         {
             UnblockWebsites();
+            removePossibleScheduledTask();
 
             if (selectedItem == "UltraFocus" && Form1.AppState.ClosingPermit == false)
             {

@@ -15,6 +15,13 @@ namespace Clarity.Forms
         public Configuration()
         {
             InitializeComponent();
+
+            // Shape the buttons to round form
+            var rndsh = new RoundShaper();
+            rndsh.RoundButton(SaveBtn);
+            rndsh.RoundButton(AddBlockBtn);
+            rndsh.RoundButton(ViewBtn);
+            rndsh.RoundButton(ClearBtn);
         }
 
         private void Configuration_Load(object sender, EventArgs e)

@@ -16,6 +16,11 @@ namespace Clarity.Forms
         public Scheduler()
         {
             InitializeComponent();
+
+            // Shape the buttons to round form
+            var rndsh = new RoundShaper();
+            rndsh.RoundButton(button1);
+            rndsh.RoundButton(save_task_btn);
         }
 
         private void Scheduler_Load(object sender, EventArgs e)

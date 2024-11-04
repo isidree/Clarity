@@ -19,6 +19,11 @@ namespace Clarity.Forms
             InitializeComponent();
             dateTimePicker2.Value = DateTime.Now.AddHours(1);
             comboBox1.SelectedItem = "Focus";
+
+            // Shape the buttons to round form
+            var rndsh = new RoundShaper();
+            rndsh.RoundButton(button1);
+            rndsh.RoundButton(fast_task_btn);
         }
 
         // Button clicked --> Launch event

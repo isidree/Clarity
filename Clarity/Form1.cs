@@ -2,8 +2,6 @@ using Clarity.Forms;
 using System;
 using System.Windows.Forms;
 using System.Threading;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace Clarity
 {
@@ -18,19 +16,24 @@ namespace Clarity
         {
             InitializeComponent();
 
-            SetButtonRegion(home_btn, 30);
-            SetButtonRegion(fast_task_btn, 30);
-            SetButtonRegion(scheduler_btn, 30);
-            SetButtonRegion(scheduled_tasks_btn, 30);
-            SetButtonRegion(configuration_btn, 30);
-            SetButtonRegion(Exit, 30);
+            // Shape the buttons to round form
+            var rndsh = new RoundShaper();
+            rndsh.RoundButton(home_btn);
+            rndsh.RoundButton(fast_task_btn);
+            rndsh.RoundButton(scheduler_btn);
+            rndsh.RoundButton(scheduled_tasks_btn);
+            rndsh.RoundButton(configuration_btn);
+            rndsh.RoundButton(Exit);
 
+            // Subscribe to FaskTask Event
             fastTask = new FastTask();
             fastTask.TaskStarted += FastTask_TaskStarted1;
 
+            // Handle formClosing
             this.FormClosing += Form1_FormClosing;
 
-            TimeChecker.Start(); // For time checking studySessions
+            // Start constant time checking
+            TimeChecker.Start();
         }
 
         // Closure control
@@ -81,18 +84,7 @@ namespace Clarity
             selectedButton.ForeColor = Color.Beige;
         }
 
-        private void SetButtonRegion(Button button, int radius)
-        {
-            GraphicsPath path = new GraphicsPath();
-            path.StartFigure();
-            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
-            path.AddArc(new Rectangle(button.Width - radius, 0, radius, radius), 270, 90);
-            path.AddArc(new Rectangle(button.Width - radius, button.Height - radius, radius, radius), 0, 90);
-            path.AddArc(new Rectangle(0, button.Height - radius, radius, radius), 90, 90);
-            path.CloseFigure();
 
-            button.Region = new Region(path);
-        }
 
         private void ifLocked(Action action)
         {
@@ -104,16 +96,16 @@ namespace Clarity
             action();
         }
 
-        private void launchTaskExecutor(string text, DateTime EndTime, string selectedItem)
+        private void launchTaskExecutor(string text, DateTime EndTime, string selectedItem, int sessionId = 0)
         {
             if (selectedItem == "Focus")
             {
                 locked = true;
-                OpenChildForm(new Forms.TaskExecutor(text, EndTime, selectedItem));
+                OpenChildForm(new Forms.TaskExecutor(text, EndTime, selectedItem, sessionId));
             }
             else if (selectedItem == "UltraFocus")
             {
-                TaskExecutor t = new(text, EndTime, selectedItem);
+                TaskExecutor t = new(text, EndTime, selectedItem, sessionId);
                 t.Show();
             }
         }
@@ -224,7 +216,7 @@ namespace Clarity
 
                 if (isSessionToday && isHourMatch && isMinuteMatch && now.Second == 0)
                 {
-                    launchTaskExecutor(session.TaskName, session.EndDate, session.FocusMode);
+                    launchTaskExecutor(session.TaskName, session.EndDate, session.FocusMode, session.Id);
                 }
             }
         }
