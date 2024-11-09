@@ -89,7 +89,7 @@
             // logo
             // 
             logo.Anchor = AnchorStyles.None;
-            logo.Image = (Image)resources.GetObject("logo.Image");
+            logo.Image = Properties.Resources.final_logo;
             logo.Location = new Point(22, 23);
             logo.Margin = new Padding(3, 4, 3, 4);
             logo.Name = "logo";

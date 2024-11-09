@@ -88,7 +88,7 @@ namespace Clarity.Forms
                 label4.Text = "Ending";
             }
 
-            SoundPlayer player = new SoundPlayer(@"Resources\rest.wav");
+            SoundPlayer player = new SoundPlayer(Properties.Resources.work);
             player.Play();
         }
         private void FlushDns()
@@ -236,7 +236,7 @@ namespace Clarity.Forms
                     label5.Text = restTime < 10 ? "0" + restTime.ToString() + ":00" : restTime.ToString() + ":00";
                     label4.Text = "Rest time";
 
-                    SoundPlayer player = new SoundPlayer(@"Resources\work.wav");
+                    SoundPlayer player = new SoundPlayer(Properties.Resources.work);
                     player.Play();
 
                     if (selectedItem == "Focus")
@@ -257,7 +257,7 @@ namespace Clarity.Forms
                     label5.Text = workTime < 10 ? "0" + workTime.ToString() + ":00" : workTime.ToString() + ":00";
                     label4.Text = "Work time";
 
-                    SoundPlayer player = new SoundPlayer(@"Resources\rest.wav");
+                    SoundPlayer player = new SoundPlayer(Properties.Resources.rest);
                     player.Play();
 
                     if (selectedItem == "Focus")
