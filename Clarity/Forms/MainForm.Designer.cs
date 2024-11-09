@@ -1,6 +1,6 @@
 ﻿namespace Clarity
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             menu = new Panel();
             home_btn = new Button();
             panel1 = new Panel();
@@ -169,6 +169,7 @@
             // 
             // desktop
             // 
+            desktop.AutoScroll = true;
             desktop.BackColor = Color.FromArgb(228, 228, 228);
             desktop.Dock = DockStyle.Fill;
             desktop.Location = new Point(277, 0);
@@ -181,7 +182,7 @@
             TimeChecker.Interval = 1000;
             TimeChecker.Tick += TimeChecker_Tick;
             // 
-            // Form1
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -190,12 +191,14 @@
             Controls.Add(desktop);
             Controls.Add(menu);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "Form1";
+            Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Clarity";
-            Load += Form1_Load;
+            FormClosing += MainForm_FormClosing;
+            Load += MainForm_Load;
             menu.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)logo).EndInit();

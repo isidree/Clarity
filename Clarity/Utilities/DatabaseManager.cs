@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 
-namespace Clarity
+namespace Clarity.Utilities
 {
     public class DatabaseManager
     {
@@ -20,13 +20,20 @@ namespace Clarity
         {
             using (var connection = new SQLiteConnection(_connectionString))
             {
-                connection.Open();
+                connection.Open();/*
+                string dropTableQuery = "DROP TABLE IF EXISTS Configuration";
+                using (var dropCommand = new SQLiteCommand(dropTableQuery, connection))
+                {
+                    dropCommand.ExecuteNonQuery();
+                }*/
                 string createTableQuery = @"
                 CREATE TABLE IF NOT EXISTS Configuration (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     BlockedLinks TEXT,
                     WorkTime INTEGER,
-                    RestTime INTEGER
+                    RestTime INTEGER,
+                    ParentalControlEnabled INTEGER,
+                    ParentalPassword TEXT
                 )";
 
                 using (var command = new SQLiteCommand(createTableQuery, connection))
@@ -42,8 +49,8 @@ namespace Clarity
                     if (count == 0)
                     {
                         string insertDefaultValues = @"
-                        INSERT INTO Configuration (BlockedLinks, WorkTime, RestTime) 
-                        VALUES ('', 20, 10)"; // Assuming default values
+                        INSERT INTO Configuration (BlockedLinks, WorkTime, RestTime, ParentalControlEnabled, ParentalPassword) 
+                        VALUES ('', 25, 10, 0, '')"; // Assuming default values
                         using (var insertCommand = new SQLiteCommand(insertDefaultValues, connection))
                         {
                             insertCommand.ExecuteNonQuery();
@@ -55,7 +62,7 @@ namespace Clarity
 
         public void SaveBlockedPages(string blockedLink)
         {
-            var (blockedLinks, _, _) = GetConfiguration();
+            var (blockedLinks, _, _, _, _) = GetConfiguration();
             blockedLinks.Add(blockedLink);
             string linkstostore = string.Join(",", blockedLinks);
 
@@ -75,18 +82,23 @@ namespace Clarity
             }
         }
 
-        public void ClearBlockedPages()
+        public void ClearBlockedPage(string nonBlockedLinkAnymore)
         {
+            var (blockedLinks, _, _, _, _) = GetConfiguration();
+            blockedLinks.RemoveAll(link => link == nonBlockedLinkAnymore);
+            string linkstostore = string.Join(",", blockedLinks);
+
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 connection.Open();
                 string updateQuery = @"
                 UPDATE Configuration
-                SET BlockedLinks = ''
+                SET BlockedLinks = @blockedLinks
                 WHERE Id = 1";
 
                 using (var command = new SQLiteCommand(updateQuery, connection))
                 {
+                    command.Parameters.AddWithValue("@blockedLinks", linkstostore);
                     command.ExecuteNonQuery();
                 }
             }
@@ -111,28 +123,65 @@ namespace Clarity
             }
         }
 
-        public (List<string>, int, int) GetConfiguration()
+        public void SwitchParentalControl(int parentalControl)
         {
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 connection.Open();
-                string selectQuery = "SELECT BlockedLinks, WorkTime, RestTime FROM Configuration LIMIT 1";
+                string updateQuery = @"
+                UPDATE Configuration
+                SET ParentalControlEnabled = @parentalControlEnabled
+                WHERE Id = 1";
+
+                using (var command = new SQLiteCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@parentalControlEnabled", parentalControl);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void ChangePassword(string password)
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+                string updateQuery = @"
+                UPDATE Configuration
+                SET ParentalPassword = @parentalPassword
+                WHERE Id = 1";
+
+                using (var command = new SQLiteCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@parentalPassword", password);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public (List<string>, int, int, int, string) GetConfiguration()
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+                string selectQuery = "SELECT BlockedLinks, WorkTime, RestTime, ParentalControlEnabled, ParentalPassword FROM Configuration LIMIT 1";
 
                 using (var command = new SQLiteCommand(selectQuery, connection))
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        var blockedLinks = reader.GetString(0).Split(',').ToList();
+                        var blockedLinks = reader.IsDBNull(0) ? new List<string>() : reader.GetString(0).Split(',').ToList();
                         var workTime = reader.GetInt32(1);
                         var restTime = reader.GetInt32(2);
+                        var parentalControlEnabled = reader.GetInt32(3);
+                        var parentalPassword = reader.IsDBNull(4) ? "" : reader.GetString(4);
 
-                        return (blockedLinks, workTime, restTime);
+                        return (blockedLinks, workTime, restTime, parentalControlEnabled, parentalPassword);
                     }
                     else
                     {
-                        // Default values should not be hit if defaults are inserted properly
-                        return (new List<string>(), 20, 10);
+                        return (new List<string>(), 25, 10, 0, "");
                     }
                 }
             }
@@ -149,6 +198,7 @@ namespace Clarity
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 connection.Open();
+                
                 string createTableQuery = @"
                 CREATE TABLE IF NOT EXISTS StudySessions (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,

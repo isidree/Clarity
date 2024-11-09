@@ -177,6 +177,7 @@
             Name = "TaskExecutor";
             Text = "TaskExecutor";
             Load += TaskExecutor_Load;
+            FormClosing += TaskExecutor_FormClosing;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -5,32 +5,31 @@ using System.Threading;
 
 namespace Clarity
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        private Form activeForm;
-        private Button[] buttons;
+        private Form? activeForm;
+        private Button[]? buttons;
         private FastTask fastTask;
         private bool locked;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
             // Shape the buttons to round form
-            var rndsh = new RoundShaper();
-            rndsh.RoundButton(home_btn);
-            rndsh.RoundButton(fast_task_btn);
-            rndsh.RoundButton(scheduler_btn);
-            rndsh.RoundButton(scheduled_tasks_btn);
-            rndsh.RoundButton(configuration_btn);
-            rndsh.RoundButton(Exit);
+            var rndsh = new Utilities.RoundShaper();
+            rndsh.RoundControl(this);
+            rndsh.RoundControl(home_btn);
+            rndsh.RoundControl(fast_task_btn);
+            rndsh.RoundControl(scheduler_btn);
+            rndsh.RoundControl(scheduled_tasks_btn);
+            rndsh.RoundControl(configuration_btn);
+            rndsh.RoundControl(Exit);
+            rndsh.RoundControl(logo);
 
             // Subscribe to FaskTask Event
             fastTask = new FastTask();
             fastTask.TaskStarted += FastTask_TaskStarted1;
-
-            // Handle formClosing
-            this.FormClosing += Form1_FormClosing;
 
             // Start constant time checking
             TimeChecker.Start();
@@ -59,7 +58,7 @@ namespace Clarity
             activeForm = childForm;
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
-            childForm.Dock = DockStyle.Fill;
+            //childForm.Dock = DockStyle.Fill;
             this.desktop.Controls.Add(childForm);
             this.desktop.Tag = childForm;
             childForm.BringToFront();
@@ -84,13 +83,11 @@ namespace Clarity
             selectedButton.ForeColor = Color.Beige;
         }
 
-
-
         private void ifLocked(Action action)
         {
             if (locked)
             {
-                MessageBox.Show("Focus mode is currently in effect, meaning that you cannot navigate at the moment.");
+                MessageBox.Show("Focus mode is currently in effect, meaning that you cannot navigate at the moment.", "Error");
                 return;
             }
             action();
@@ -111,14 +108,14 @@ namespace Clarity
         }
 
         // -- Page loading through initializations & buttons --
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             OpenChildForm(new Forms.Home());
             SelectedButton(home_btn);
 
             // create database
 
-            var database = new DatabaseManager();
+            var database = new Utilities.DatabaseManager();
             database.CreateConfigurationTable();
             database.CreateStudySessionsTable();
         }
@@ -179,7 +176,7 @@ namespace Clarity
 
         // -- Closure --
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!AppState.ClosingPermit)
             {
@@ -193,7 +190,7 @@ namespace Clarity
         private void TimeChecker_Tick(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
-            var database = new DatabaseManager();
+            var database = new Utilities.DatabaseManager();
             List<(int Id, string TaskName, DateTime StartDate, DateTime EndDate, string FocusMode, bool ReceiveNotifications)> studySessions = database.GetStudySessions();
 
             foreach (var session in studySessions)

@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Do not include http:// or https:// in the beginning of the link. To effectively block a site, consider adding multiple domains that lead to the same page, for example: www.youtube.com, youtube.com, m.youtube.com, etc.</value>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Parental control is made for those parents who need their child to concentrate better and focus on their tasks. This mode will require a password to remove sessions, cancel sessions and change settings.</value>
   </data>
 </root>

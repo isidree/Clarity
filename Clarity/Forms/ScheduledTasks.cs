@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Clarity.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,7 +14,7 @@ namespace Clarity.Forms
 {
     public partial class ScheduledTasks : Form
     {
-        private List<(int Id, string TaskName, DateTime StartDate, DateTime EndDate, string FocusMode, bool ReceiveNotifications)> studySessions;
+        private List<(int Id, string TaskName, DateTime StartDate, DateTime EndDate, string FocusMode, bool ReceiveNotifications)>? studySessions;
 
         public ScheduledTasks()
         {
@@ -27,7 +28,7 @@ namespace Clarity.Forms
 
         private void LoadStudySessions()
         {
-            var database = new DatabaseManager();
+            var database = new Utilities.DatabaseManager();
             studySessions = database.GetStudySessions();
 
             label2.Text = $"There are currently {studySessions.Count} tasks scheduled.";
@@ -52,8 +53,8 @@ namespace Clarity.Forms
                 var deleteBtn = new Button { Text = "Delete", Font = new Font("Verdana", 15), FlatStyle = FlatStyle.Flat, Width = 150, Height = 50, BackColor = Color.FromArgb(161, 136, 127), TextAlign = ContentAlignment.MiddleCenter };
                 var divider = new Panel { Height = 2, Dock = DockStyle.Bottom, BackColor = Color.Gray, Margin = new Padding(0, 5, 0, 5) };
 
-                var rndsh = new RoundShaper();
-                rndsh.RoundButton(deleteBtn);
+                var rndsh = new Utilities.RoundShaper();
+                rndsh.RoundControl(deleteBtn);
                 deleteBtn.FlatAppearance.BorderSize = 0;
                 deleteBtn.Click += (s, e) => DeleteStudySession(session.Id);
 
@@ -79,13 +80,16 @@ namespace Clarity.Forms
 
         private void DeleteStudySession(int sessionId)
         {
-            var confirmResult = MessageBox.Show("Are you sure to delete this session?", "Confirm Delete", MessageBoxButtons.YesNo);
-            if (confirmResult == DialogResult.Yes)
+            new InputDialog().VerifyPassword(() =>
             {
-                var database = new DatabaseManager();
-                database.DeleteStudySession(sessionId);
-                LoadStudySessions();
-            }
+                var confirmResult = MessageBox.Show("Are you sure to delete this session?", "Confirmation", MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    var database = new Utilities.DatabaseManager();
+                    database.DeleteStudySession(sessionId);
+                    LoadStudySessions();
+                }
+            });
         }
     }
 }

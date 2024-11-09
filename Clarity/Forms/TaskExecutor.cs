@@ -12,6 +12,8 @@ using System.IO;
 using System.Security.Principal;
 using System.Diagnostics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar;
+using System.Media;
+using Clarity.Utilities;
 
 namespace Clarity.Forms
 {
@@ -23,9 +25,9 @@ namespace Clarity.Forms
         private int sessionId;
         private TimeSpan timeRemaining;
 
-        private List<TimeSpan> countdownSpans;
+        private List<TimeSpan>? countdownSpans;
         private int currentSpanIndex;
-        private string originalHostsContent;
+        private string? originalHostsContent;
         private string hostFilePath = @"C:\WINDOWS\system32\drivers\etc\hosts";
 
         private List<string> blockedLinks;
@@ -45,19 +47,18 @@ namespace Clarity.Forms
             sessionId = _sessionId;
 
             // Retrieve data from configuration db
-            var database = new DatabaseManager();
-            (blockedLinks, workTime, restTime) = database.GetConfiguration();
+            var database = new Utilities.DatabaseManager();
+            (blockedLinks, workTime, restTime, _, _) = database.GetConfiguration();
 
             // Handle form closure
-            this.FormClosing += TaskExecutor_FormClosing;
             if (File.Exists(hostFilePath))
             {
                 originalHostsContent = File.ReadAllText(hostFilePath);
             }
 
             // Shape the buttons to round form
-            var rndsh = new RoundShaper();
-            rndsh.RoundButton(fast_task_btn);
+            var rndsh = new Utilities.RoundShaper();
+            rndsh.RoundControl(fast_task_btn);
         }
 
         private void TaskExecutor_Load(object sender, EventArgs e)
@@ -77,8 +78,8 @@ namespace Clarity.Forms
             StartNextSpan();
 
             label3.Text = text;
-            label5.Text = restTime.ToString() + ":00";
-            label1.Text = workTime.ToString() + ":00";
+            label5.Text = restTime < 10 ? "0" + restTime.ToString() + ":00" : restTime.ToString() + ":00";
+            label1.Text = workTime < 10 ? "0" + workTime.ToString() + ":00" : workTime.ToString() + ":00";
             label7.Text = "Ending time: " + endTime.ToString(@"dd/MM/yyyy HH:mm");
 
             if (currentSpanIndex == countdownSpans.Count - 1)
@@ -86,6 +87,9 @@ namespace Clarity.Forms
                 label5.Text = "00:00";
                 label4.Text = "Ending";
             }
+
+            SoundPlayer player = new SoundPlayer(@"Resources\rest.wav");
+            player.Play();
         }
         private void FlushDns()
         {
@@ -110,9 +114,39 @@ namespace Clarity.Forms
             }
         }
 
+        public void ClearEdgeCache()
+        {
+            // Check if Edge is installed
+            string edgeCachePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Microsoft\\Edge\\User Data\\Default\\Cache"
+            );
+
+            if (Directory.Exists(edgeCachePath))
+            {
+                try
+                {
+                    // Ensure Edge is closed
+                    Process[] edgeInstances = Process.GetProcessesByName("msedge");
+                    foreach (var instance in edgeInstances)
+                    {
+                        instance.Kill();
+                    }
+
+                    // Clear cache
+                    Directory.Delete(edgeCachePath, true);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error clearing Edge cache: {ex.Message}", "Error");
+                }
+            }
+        }
+
         public void BlockWebsites()
         {
             FlushDns();
+            //ClearEdgeCache();
             for (int i = 0; i < blockedLinks.Count; i++)
             {
                 if (!(blockedLinks[i] == ""))
@@ -173,14 +207,14 @@ namespace Clarity.Forms
 
         private void StartNextSpan()
         {
-            if (currentSpanIndex >= countdownSpans.Count)
+            if (currentSpanIndex >= countdownSpans?.Count)
             {
                 timer1.Stop();
                 exit();
                 return;
             }
 
-            timeRemaining = countdownSpans[currentSpanIndex];
+            timeRemaining = countdownSpans?[currentSpanIndex] ?? TimeSpan.Zero;
             timer1.Start();
         }
 
@@ -199,40 +233,46 @@ namespace Clarity.Forms
                 if (currentSpanIndex % 2 == 0)
                 {
                     label2.Text = "Work time";
-                    label5.Text = restTime.ToString() + ":00";
+                    label5.Text = restTime < 10 ? "0" + restTime.ToString() + ":00" : restTime.ToString() + ":00";
                     label4.Text = "Rest time";
+
+                    SoundPlayer player = new SoundPlayer(@"Resources\work.wav");
+                    player.Play();
 
                     if (selectedItem == "Focus")
                     {
                         BlockWebsites();
-                        MessageBox.Show("Work time: the pages have been blocked.");
+                        MessageBox.Show("Work time: the pages have been blocked.", "Information");
                     }
                     else if (selectedItem == "UltraFocus")
                     {
                         BlockComputer();
-                        MessageBox.Show("Work time: the computer has been blocked.");
+                        MessageBox.Show("Work time: the computer has been blocked.", "Information");
                     }
                     
                 }
                 else if (currentSpanIndex % 2 != 0)
                 {
                     label2.Text = "Rest time";
-                    label5.Text = workTime.ToString() + ":00";
+                    label5.Text = workTime < 10 ? "0" + workTime.ToString() + ":00" : workTime.ToString() + ":00";
                     label4.Text = "Work time";
+
+                    SoundPlayer player = new SoundPlayer(@"Resources\rest.wav");
+                    player.Play();
 
                     if (selectedItem == "Focus")
                     {
                         UnblockWebsites();
-                        MessageBox.Show("Rest time: the blocked pages are temporarily unblocked.");
+                        MessageBox.Show("Rest time: the blocked pages are temporarily unblocked.", "Information");
                     }
                     else if (selectedItem == "UltraFocus")
                     {
                         UnblockComputer();
-                        MessageBox.Show("Rest time: the computer is temporarily unblocked.");
+                        MessageBox.Show("Rest time: the computer is temporarily unblocked.", "Information");
                     }
                 }
 
-                if (currentSpanIndex == countdownSpans.Count - 1)
+                if (currentSpanIndex == countdownSpans?.Count - 1)
                 {
                     label5.Text = "00:00";
                     label4.Text = "Ending";
@@ -244,39 +284,38 @@ namespace Clarity.Forms
 
         private void fast_task_btn_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Are you sure you want to exit? It is highly advised not to stop while you still have to finish your tasks.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            new InputDialog().VerifyPassword(() =>
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want to exit? It is highly advised not to stop while you still have to finish your tasks.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result == DialogResult.Yes)
-            {
-                exit();
-            }
-            else
-            {
-                MessageBox.Show("I'm glad you stayed. Keep working hard, you're almost there!");
-            }
+                if (result == DialogResult.Yes)
+                {
+                    exit();
+                }
+            });
         }
 
         private void removePossibleScheduledTask()
         {
             if (sessionId != 0)
             {
-                var database = new DatabaseManager();
+                var database = new Utilities.DatabaseManager();
                 database.DeleteStudySession(sessionId);
             }
         }
 
         private void exit()
         {
-            Form1.AppState.ClosingPermit = true;
+            MainForm.AppState.ClosingPermit = true;
             Application.Restart();
         }
-
+        
         public void TaskExecutor_FormClosing(object sender, FormClosingEventArgs e)
         {
             UnblockWebsites();
             removePossibleScheduledTask();
 
-            if (selectedItem == "UltraFocus" && Form1.AppState.ClosingPermit == false)
+            if (selectedItem == "UltraFocus" && MainForm.AppState.ClosingPermit == false)
             {
                 e.Cancel = true;
             }
