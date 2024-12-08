@@ -62,7 +62,7 @@
             label6.Anchor = AnchorStyles.None;
             label6.BackColor = Color.FromArgb(62, 39, 35);
             label6.BorderStyle = BorderStyle.Fixed3D;
-            label6.Location = new Point(113, 185);
+            label6.Location = new Point(111, 267);
             label6.Name = "label6";
             label6.Size = new Size(430, 3);
             label6.TabIndex = 22;
@@ -73,7 +73,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Verdana", 36F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = Color.FromArgb(62, 39, 35);
-            label1.Location = new Point(99, 107);
+            label1.Location = new Point(97, 189);
             label1.Name = "label1";
             label1.Size = new Size(435, 73);
             label1.TabIndex = 21;
@@ -85,7 +85,7 @@
             WorkTimeLabel.AutoSize = true;
             WorkTimeLabel.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
             WorkTimeLabel.ForeColor = Color.FromArgb(62, 39, 35);
-            WorkTimeLabel.Location = new Point(102, 304);
+            WorkTimeLabel.Location = new Point(102, 376);
             WorkTimeLabel.Name = "WorkTimeLabel";
             WorkTimeLabel.Size = new Size(159, 31);
             WorkTimeLabel.TabIndex = 26;
@@ -97,7 +97,7 @@
             RestTimeLabel.AutoSize = true;
             RestTimeLabel.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
             RestTimeLabel.ForeColor = Color.FromArgb(62, 39, 35);
-            RestTimeLabel.Location = new Point(102, 374);
+            RestTimeLabel.Location = new Point(102, 446);
             RestTimeLabel.Name = "RestTimeLabel";
             RestTimeLabel.Size = new Size(148, 31);
             RestTimeLabel.TabIndex = 27;
@@ -107,7 +107,7 @@
             // 
             WorkTimeInput.Anchor = AnchorStyles.None;
             WorkTimeInput.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            WorkTimeInput.Location = new Point(278, 302);
+            WorkTimeInput.Location = new Point(278, 374);
             WorkTimeInput.Maximum = new decimal(new int[] { 90, 0, 0, 0 });
             WorkTimeInput.Minimum = new decimal(new int[] { 5, 0, 0, 0 });
             WorkTimeInput.Name = "WorkTimeInput";
@@ -119,7 +119,7 @@
             // 
             RestTimeInput.Anchor = AnchorStyles.None;
             RestTimeInput.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            RestTimeInput.Location = new Point(266, 372);
+            RestTimeInput.Location = new Point(266, 444);
             RestTimeInput.Maximum = new decimal(new int[] { 30, 0, 0, 0 });
             RestTimeInput.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             RestTimeInput.Name = "RestTimeInput";
@@ -133,7 +133,7 @@
             WorkTimeInfo.AutoSize = true;
             WorkTimeInfo.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
             WorkTimeInfo.ForeColor = Color.FromArgb(62, 39, 35);
-            WorkTimeInfo.Location = new Point(358, 304);
+            WorkTimeInfo.Location = new Point(358, 376);
             WorkTimeInfo.Name = "WorkTimeInfo";
             WorkTimeInfo.Size = new Size(329, 31);
             WorkTimeInfo.TabIndex = 33;
@@ -145,7 +145,7 @@
             RestTimeInfo.AutoSize = true;
             RestTimeInfo.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
             RestTimeInfo.ForeColor = Color.FromArgb(62, 39, 35);
-            RestTimeInfo.Location = new Point(346, 374);
+            RestTimeInfo.Location = new Point(346, 446);
             RestTimeInfo.Name = "RestTimeInfo";
             RestTimeInfo.Size = new Size(329, 31);
             RestTimeInfo.TabIndex = 34;
@@ -157,7 +157,7 @@
             BlockedLinksLabel.AutoSize = true;
             BlockedLinksLabel.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
             BlockedLinksLabel.ForeColor = Color.FromArgb(62, 39, 35);
-            BlockedLinksLabel.Location = new Point(99, 619);
+            BlockedLinksLabel.Location = new Point(99, 693);
             BlockedLinksLabel.Name = "BlockedLinksLabel";
             BlockedLinksLabel.Size = new Size(156, 31);
             BlockedLinksLabel.TabIndex = 35;
@@ -170,7 +170,7 @@
             SaveBtn.FlatAppearance.BorderSize = 0;
             SaveBtn.FlatStyle = FlatStyle.Flat;
             SaveBtn.Font = new Font("Verdana", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            SaveBtn.Location = new Point(105, 445);
+            SaveBtn.Location = new Point(105, 517);
             SaveBtn.Name = "SaveBtn";
             SaveBtn.Size = new Size(301, 56);
             SaveBtn.TabIndex = 36;
@@ -183,7 +183,7 @@
             LinkBlockTextBox.Anchor = AnchorStyles.None;
             LinkBlockTextBox.BackColor = Color.White;
             LinkBlockTextBox.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            LinkBlockTextBox.Location = new Point(273, 616);
+            LinkBlockTextBox.Location = new Point(273, 690);
             LinkBlockTextBox.Name = "LinkBlockTextBox";
             LinkBlockTextBox.Size = new Size(563, 38);
             LinkBlockTextBox.TabIndex = 37;
@@ -195,7 +195,7 @@
             AddBlockBtn.FlatAppearance.BorderSize = 0;
             AddBlockBtn.FlatStyle = FlatStyle.Flat;
             AddBlockBtn.Font = new Font("Verdana", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            AddBlockBtn.Location = new Point(852, 616);
+            AddBlockBtn.Location = new Point(852, 690);
             AddBlockBtn.Name = "AddBlockBtn";
             AddBlockBtn.Size = new Size(111, 38);
             AddBlockBtn.TabIndex = 39;
@@ -208,7 +208,7 @@
             label4.Anchor = AnchorStyles.None;
             label4.BackColor = Color.FromArgb(62, 39, 35);
             label4.BorderStyle = BorderStyle.Fixed3D;
-            label4.Location = new Point(105, 276);
+            label4.Location = new Point(105, 348);
             label4.Name = "label4";
             label4.Size = new Size(430, 3);
             label4.TabIndex = 44;
@@ -219,7 +219,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Verdana", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
             label5.ForeColor = Color.FromArgb(62, 39, 35);
-            label5.Location = new Point(105, 232);
+            label5.Location = new Point(105, 304);
             label5.Name = "label5";
             label5.Size = new Size(427, 34);
             label5.TabIndex = 43;
@@ -230,7 +230,7 @@
             label7.Anchor = AnchorStyles.None;
             label7.BackColor = Color.FromArgb(62, 39, 35);
             label7.BorderStyle = BorderStyle.Fixed3D;
-            label7.Location = new Point(99, 596);
+            label7.Location = new Point(99, 670);
             label7.Name = "label7";
             label7.Size = new Size(370, 3);
             label7.TabIndex = 46;
@@ -241,7 +241,7 @@
             label8.AutoSize = true;
             label8.Font = new Font("Verdana", 16.2F, FontStyle.Bold, GraphicsUnit.Point);
             label8.ForeColor = Color.FromArgb(62, 39, 35);
-            label8.Location = new Point(99, 552);
+            label8.Location = new Point(99, 626);
             label8.Name = "label8";
             label8.Size = new Size(373, 34);
             label8.TabIndex = 45;
@@ -316,9 +316,9 @@
             // 
             panel1.Anchor = AnchorStyles.None;
             panel1.AutoScroll = true;
-            panel1.Location = new Point(107, 682);
+            panel1.Location = new Point(107, 756);
             panel1.Name = "panel1";
-            panel1.Size = new Size(865, 267);
+            panel1.Size = new Size(865, 159);
             panel1.TabIndex = 0;
             // 
             // label2
@@ -327,7 +327,7 @@
             label2.AutoSize = true;
             label2.Font = new Font("Verdana", 15F, FontStyle.Regular, GraphicsUnit.Point);
             label2.ForeColor = Color.FromArgb(62, 39, 35);
-            label2.Location = new Point(254, 799);
+            label2.Location = new Point(254, 823);
             label2.Name = "label2";
             label2.Size = new Size(552, 31);
             label2.TabIndex = 53;
@@ -340,7 +340,7 @@
             button1.FlatAppearance.BorderSize = 0;
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Verdana", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(978, 616);
+            button1.Location = new Point(978, 690);
             button1.Name = "button1";
             button1.Size = new Size(45, 38);
             button1.TabIndex = 54;
