@@ -313,12 +313,13 @@
             parental_control_enable.Click += parental_control_enable_Click;
             // 
             // panel1
-            // 
+            //
+            panel1.Anchor = AnchorStyles.None;
             panel1.AutoScroll = true;
             panel1.Location = new Point(110, 659);
             panel1.Name = "panel1";
             panel1.Size = new Size(865, 267);
-            panel1.TabIndex = 52;
+            panel1.TabIndex = 0;
             // 
             // label2
             // 
