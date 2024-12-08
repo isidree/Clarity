@@ -33,6 +33,9 @@ namespace Clarity
 
             // Start constant time checking
             TimeChecker.Start();
+
+            // Fix DPI
+            this.AutoScaleMode = AutoScaleMode.Dpi;
         }
 
         // Closure control
